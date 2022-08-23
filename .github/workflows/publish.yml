@@ -1,0 +1,21 @@
+name: Github & NPM Release
+
+on:
+  push:
+    branches: [main, master]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: 'Running Semantic Release'
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.G_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
