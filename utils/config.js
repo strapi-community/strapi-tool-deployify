@@ -12,6 +12,7 @@ const _config = {
 	useDocker: false,
 	quickStart: false,
 	herokuApiToken: ``,
+	projectName: ``,
 	appKeys: crypto.randomBytes(64).toString(`hex`),
 	apiTokenSalt: crypto.randomBytes(32).toString(`hex`),
 	adminJwtSecret: crypto.randomBytes(32).toString(`hex`),
