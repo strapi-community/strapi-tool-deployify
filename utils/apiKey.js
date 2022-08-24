@@ -8,7 +8,6 @@ const getApiKey = async () => {
 		)
 		.substring(11, 47);
 	setConfig({ herokuApiToken });
-	console.log(config);
 };
 
 module.exports = getApiKey;

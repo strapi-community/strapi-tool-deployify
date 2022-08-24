@@ -20,7 +20,7 @@ const goodbye = async (quit = false) => {
 	spinner.stopAndPersist({
 		symbol: `🎉`,
 		text: ` ${chalk.bold.yellow(
-			`We now have got ${config.githubStars} 🌟 and counting... \n`
+			`We now have got ${config.githubStars || 0} 🌟 and counting... \n`
 		)} `
 	});
 	console.log(`👉  ${pkg.url} 👈 \n`);

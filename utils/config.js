@@ -11,6 +11,7 @@ const _config = {
 	githubStars: 0,
 	useDocker: false,
 	quickStart: false,
+	herokuCLI: false,
 	herokuApiToken: ``,
 	projectName: ``,
 	appKeys: crypto.randomBytes(64).toString(`hex`),
@@ -18,7 +19,6 @@ const _config = {
 	adminJwtSecret: crypto.randomBytes(32).toString(`hex`),
 	jwtSecret: crypto.randomBytes(32).toString(`hex`)
 };
-console.log(_config);
 const setConfig = newConfig => Object.assign(_config, newConfig);
 const config = _config;
 

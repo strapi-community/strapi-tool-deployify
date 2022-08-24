@@ -7,15 +7,15 @@
  * @author Simen Daehlin <https://dehlin.dev>
  */
 
-const { cli, init, log } = require(`./cli`);
+const { cli, init, log, message } = require(`./cli`);
 const questions = require(`./core/questions`);
 const {
 	detectPackageManager,
 	goodbye,
 	detectDownloadsAndStars,
+	detectHerokuCLI,
 	config
 } = require(`./utils`);
-const getApiKey = require(`./utils/apiKey`);
 const { installDependecies, copyHerokuFiles } = require(`./core`);
 const input = cli.input;
 const flags = cli.flags;
@@ -27,6 +27,8 @@ const { clear, debug } = flags;
 	try {
 		await detectDownloadsAndStars();
 		await detectPackageManager();
+		await detectHerokuCLI();
+		await message(`This tool will only create NEW project on heroku`);
 		await questions();
 		config.useDocker && (await copyHerokuFiles());
 		await installDependecies();

@@ -15,7 +15,8 @@ const {
 const {
 	detectPackageManager,
 	detectProjectType,
-	detectDownloadsAndStars
+	detectDownloadsAndStars,
+	detectHerokuCLI
 } = require(`./detection`);
 const getApiKey = require(`./apiKey`);
 
@@ -36,5 +37,6 @@ module.exports = {
 	setConfig,
 	config,
 	detectDownloadsAndStars,
-	getApiKey
+	getApiKey,
+	detectHerokuCLI
 };

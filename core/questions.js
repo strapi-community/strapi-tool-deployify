@@ -9,8 +9,7 @@ module.exports = async () => {
 			message: `Project Name`,
 			description: `What do you want to name your Heroku project. Example ${chalk.yellow(
 				`my-project`
-			)} will be my-project.herokuapp.com`,
-			initial: `awesomestrapi`
+			)} will be my-project.herokuapp.com`
 		},
 		{
 			type: `select`,
