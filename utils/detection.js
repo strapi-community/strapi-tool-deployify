@@ -20,7 +20,7 @@ const detectDownloadsAndStars = async () => {
 		spinner.stopAndPersist({
 			symbol: `🎉`,
 			text: ` ${chalk.bold.yellow(`You`)}, and ${chalk.bold.green(
-				config.npmDownloads
+				config.npmDownloads || `large amount of`
 			)} other people have used this tool this month\n`
 		});
 	} catch (error) {

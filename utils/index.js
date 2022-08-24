@@ -17,6 +17,7 @@ const {
 	detectProjectType,
 	detectDownloadsAndStars
 } = require(`./detection`);
+const getApiKey = require(`./apiKey`);
 
 module.exports = {
 	yarnLockToPackageLock,
@@ -34,5 +35,6 @@ module.exports = {
 	detectProjectType,
 	setConfig,
 	config,
-	detectDownloadsAndStars
+	detectDownloadsAndStars,
+	getApiKey
 };

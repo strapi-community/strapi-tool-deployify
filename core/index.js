@@ -1,11 +1,10 @@
-const { createDockerComposeFiles, createDockerFiles } = require(`./copyFiles`);
+const { copyHerokuFiles } = require(`./copyFiles`);
 const installDependecies = require(`./dependencies`);
 const { checkAndBackupDB, generateDatabase } = require(`./database`);
 const { appendEnv, createEnv } = require(`./env`);
 const questions = require(`./questions`);
 module.exports = {
-	createDockerComposeFiles,
-	createDockerFiles,
+	copyHerokuFiles,
 	checkAndBackupDB,
 	generateDatabase,
 	installDependecies,

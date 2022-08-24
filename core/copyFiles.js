@@ -1,58 +1,26 @@
 const {
 	yarnLockToPackageLock,
-	checkForDataFolder,
 	spinner,
 	chalk,
-	generateError,
 	copyFile,
 	config
 } = require(`../utils`);
 
-const createDockerFiles = async () => {
-	spinner.start();
-	try {
-		await copyFile(
-			`${config.dockerfileDir}/development/Dockerfile.${config.packageManager}`,
-			`${config.outDir}/Dockerfile`
-		);
-		if (config.env === `production` || config.env === `both`) {
-			await copyFile(
-				`${config.dockerfileDir}/production/Dockerfile.${config.packageManager}`,
-				`${config.outDir}/Dockerfile.prod`
-			);
-		}
-		spinner.stopAndPersist({
-			symbol: `🐳`,
-			text: ` ${chalk.bold.blue(`Dockerfile`)} for ${chalk.yellow(
-				config.env === `both`
-					? `development and production`
-					: config.env.toUpperCase()
-			)} added \n`
-		});
-	} catch (error) {
-		generateError(error);
-	}
-
+const copyHerokuFiles = async () => {
+	spinner.start(` 🚀  Creating heroku.yml depoyment file`);
 	await copyFile(
-		`${config.dockerfileDir}/.dockerignore`,
-		`${config.outDir}/.dockerignore`
-	);
-	await checkForDataFolder();
-};
-
-const createDockerComposeFiles = async () => {
-	spinner.start(` 🐳  Creating docker-compose.yml file`);
-	await copyFile(
-		`${config.dockerComposeDir}/docker-compose.${config.dbtype.toLowerCase()}`,
-		`${config.outDir}/docker-compose.yml`
+		`${config.providersDir}/${config.provider}.${config.provider}.yml`,
+		`${config.outDir}/${config.provider}.yml`
 	);
 	spinner.stopAndPersist({
 		symbol: `🐳`,
-		text: ` Added docker-compose file with ${chalk.bold.green(
-			config.dbtype.toUpperCase()
-		)} configuration \n`
+		text: ` Added ${chalk.bold.green(
+			config.provider.toUpperCase()
+		)} configuration file to project \n`
 	});
 	await yarnLockToPackageLock();
 };
 
-module.exports = { createDockerComposeFiles, createDockerFiles };
+module.exports = {
+	copyHerokuFiles
+};

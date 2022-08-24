@@ -1,6 +1,6 @@
 {
 	"name": "@strapi-community/herokufy",
-	"description": "Easy add docker support for a Strapi Project",
+	"description": "Easy deploy a Strapi Project to heroku",
 	"version": "0.0.0-development",
 	"license": "MIT",
 	"bin": {
@@ -44,7 +44,8 @@
 		"open": "^8.4.0",
 		"ora": "^5.4.1",
 		"prompts": "^2.4.2",
-		"replace-in-file": "^6.3.5"
+		"replace-in-file": "^6.3.5",
+		"shelljs": "^0.8.5"
 	},
 	"devDependencies": {
 		"cz-conventional-changelog": "^3.3.0",

@@ -2,15 +2,15 @@ const prompts = require(`prompts`);
 
 const { setConfig, config } = require(`../utils`);
 module.exports = async () => {
-	const dockerCompose = await prompts({
-		name: `dockerCompose`,
-		message: `Do you want to create a docker-compose file? 🐳`,
+	const useDocker = await prompts({
+		name: `useDocker`,
+		message: `Are you using Docker for deployment 🐳`,
 		active: `Yes`,
 		inactive: `No`,
 		type: `toggle`
 	});
-	setConfig(dockerCompose);
-	if (config.dockerCompose) {
+	setConfig(useDocker);
+	if (!config.useDocker) {
 		const questions = await prompts([
 			{
 				type: `select`,
