@@ -1,15 +1,13 @@
 const prompts = require(`prompts`);
 
-const { setConfig, config, chalk } = require(`../utils`);
+const { setConfig, config } = require(`../utils`);
 module.exports = async () => {
 	const questions = await prompts([
 		{
 			type: `text`,
 			name: `projectName`,
 			message: `Project Name`,
-			description: `What do you want to name your Heroku project. Example ${chalk.yellow(
-				`my-project`
-			)} will be my-project.herokuapp.com`
+			validate: value => (value ? true : `Project name is required`)
 		},
 		{
 			type: `select`,
@@ -45,17 +43,15 @@ module.exports = async () => {
 		},
 		{
 			name: `useDocker`,
+			type: `confirm`,
 			message: `Are you using Docker for deployment? 🐳`,
-			active: `Yes`,
-			inactive: `No`,
-			type: `toggle`
+			initial: false
 		}
 	]);
 	setConfig({
 		...config,
 		...questions,
-		projectName: questions.projectName.toLowerCase(),
-		env: questions.env.toLowerCase()
+		projectName: questions.projectName,
+		env: questions.env
 	});
-	console.log(config);
 };

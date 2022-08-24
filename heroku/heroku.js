@@ -9,7 +9,7 @@ const createHerokuEnv = async () => {
 	);
 	spinner.stopAndPersist({
 		symbol: `🦄`,
-		text: `Setting up your ${chalk.magenta.bold(`Heroku`)} ${
+		text: ` Setting up your ${chalk.magenta.bold(`Heroku`)} ${
 			config.projectName
 		} project variables \n`
 	});
@@ -17,9 +17,9 @@ const createHerokuEnv = async () => {
 const createHerokuApp = async () => {
 	spinner.stopAndPersist({
 		symbol: `🌍`,
-		text: `Setting up your ${chalk.magenta.bold(
-			`Heroku`
-		)} app named ${config.projectName.toUpperCase()} \n`
+		text: ` Setting up ${chalk.magenta.bold(
+			`${config.projectName.toUpperCase()} Heroku`
+		)} app on Heroku (${chalk.blue.bold(config.herokuRegion.toUpperCase())}) \n`
 	});
 	shell.exec(
 		`HEROKU_API_KEY="${config.herokuApiToken}" heroku create ${config.projectName} --region ${config.herokuRegion}`
@@ -33,19 +33,30 @@ const setupHerokuPostgres = async () => {
 	);
 	spinner.stopAndPersist({
 		symbol: `💾`,
-		text: `Setting up your ${chalk.magenta.bold(`Heroku`)} database \n`
+		text: ` Spinning up a PostgresSQL database and connecting it to ${chalk.magenta.bold(
+			config.projectName.toUpperCase()
+		)}  on ${chalk.magenta.bold(`Heroku`)}  \n`
 	});
 };
 
 const destroyHerokuApp = async () => {
 	spinner.stopAndPersist({
-		symbol: `🌍`,
-		text: `Destroying your ${chalk.magenta.bold(`Heroku`)} app \n`
+		symbol: `💀`,
+		text: `Tearing down ${chalk.magenta.bold(
+			config.projectName.toUpperCase()
+		)} on Heroku  \n`
 	});
 	shell.exec(
 		`HEROKU_API_KEY="${config.herokuApiToken}" heroku apps:destroy ${config.projectName} --confirm ${config.projectName}`
 	);
+	spinner.stopAndPersist({
+		symbol: `🤠`,
+		text: `Note from ${chalk.magenta(
+			`heroku`
+		)} here are the apps that are left on your heroku account 👇 \n`
+	});
 	shell.exec(`HEROKU_API_KEY="${config.herokuApiToken}" heroku apps`, {});
+	console.log(`\n`);
 };
 
 module.exports = {

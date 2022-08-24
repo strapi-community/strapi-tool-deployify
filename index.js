@@ -15,6 +15,7 @@ const {
 	goodbye,
 	detectDownloadsAndStars,
 	detectHerokuCLI,
+	detectProjectType,
 	config,
 	chalk,
 	setConfig
@@ -43,9 +44,7 @@ const { clear, debug } = flags;
 					type: `text`,
 					name: `projectName`,
 					message: `Project Name`,
-					description: `What do you want to name your Heroku project. Example ${chalk.yellow(
-						`my-project`
-					)} will be my-project.herokuapp.com`
+					validate: value => (value ? true : `Project name is required`)
 				}
 			])
 		);
@@ -57,6 +56,7 @@ const { clear, debug } = flags;
 	try {
 		await detectDownloadsAndStars();
 		await detectPackageManager();
+		await detectProjectType();
 		await detectHerokuCLI();
 		await message(`This tool will only create NEW project on heroku`);
 		await questions();
