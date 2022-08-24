@@ -1,11 +1,10 @@
 const path = require(`path`);
+const shell = require(`shelljs`);
 const { spinner, chalk, constants, access } = require(`./utils`);
 const { setConfig, config } = require(`./config`);
 const fetch = require(`node-fetch`);
-const shell = require(`shelljs`);
-const goodbye = require(`./goodbye`);
 const child_process = require(`child_process`);
-const getApiKey = require(`./apiKey`);
+const getApiKey = require(`../heroku/apiKey`);
 
 const detectDownloadsAndStars = async () => {
 	spinner.start(` 🦄  ${chalk.yellow(`Prepping some magic`)} `);
@@ -97,7 +96,7 @@ const detectHerokuCLI = async () => {
 
 		spinner.stopAndPersist({
 			symbol: `💻`,
-			text: ` ${chalk.bold.green(`Heroku CLI detected`)}`
+			text: ` ${chalk.bold.magenta(`Heroku`)} CLI detected \n`
 		});
 		await getApiKey();
 		if (!config.herokuApiToken) {
@@ -107,14 +106,14 @@ const detectHerokuCLI = async () => {
 	} else {
 		spinner.stopAndPersist({
 			symbol: `💻`,
-			text: `${chalk.yellow(
-				` We are installing the heroku cli tool for you`
-			)}  \n`
+			text: ` ${chalk.bold.magenta(
+				`Heroku`
+			)} CLI not detected, installing the tool \n`
 		});
 		shell.exec(`npm install -g heroku`, { silent: true });
 		spinner.stopAndPersist({
 			symbol: `🪄`,
-			text: ` ${chalk.magenta.bold(` Please login to heroku 👇`)} \n`
+			text: ` Please login to ${chalk.magenta.bold(`Heroku`)} to continue 👇 \n`
 		});
 		child_process.execFileSync(`heroku`, [`login`], { stdio: `inherit` });
 	}

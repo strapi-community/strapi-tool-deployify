@@ -14,6 +14,7 @@ const _config = {
 	herokuCLI: false,
 	herokuApiToken: ``,
 	projectName: ``,
+	herokuRegion: `eu`,
 	appKeys: crypto.randomBytes(64).toString(`hex`),
 	apiTokenSalt: crypto.randomBytes(32).toString(`hex`),
 	adminJwtSecret: crypto.randomBytes(32).toString(`hex`),

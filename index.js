@@ -9,20 +9,50 @@
 
 const { cli, init, log, message } = require(`./cli`);
 const questions = require(`./core/questions`);
+const prompts = require(`prompts`);
 const {
 	detectPackageManager,
 	goodbye,
 	detectDownloadsAndStars,
 	detectHerokuCLI,
-	config
+	config,
+	chalk,
+	setConfig
 } = require(`./utils`);
-const { installDependecies, copyHerokuFiles } = require(`./core`);
+const {
+	createHerokuApp,
+	createHerokuEnv,
+	setupHerokuPostgres,
+	destroyHerokuApp
+} = require(`./heroku`);
+const {
+	installDependecies,
+	copyHerokuFiles,
+	generateDatabase
+} = require(`./core`);
 const input = cli.input;
 const flags = cli.flags;
 const { clear, debug } = flags;
 (async () => {
 	init({ clear });
 	input.includes(`help`) && cli.showHelp(0);
+	if (input.includes(`reset`)) {
+		setConfig(
+			await prompts([
+				{
+					type: `text`,
+					name: `projectName`,
+					message: `Project Name`,
+					description: `What do you want to name your Heroku project. Example ${chalk.yellow(
+						`my-project`
+					)} will be my-project.herokuapp.com`
+				}
+			])
+		);
+		destroyHerokuApp();
+		await goodbye();
+		return;
+	}
 	debug && log(flags);
 	try {
 		await detectDownloadsAndStars();
@@ -32,8 +62,13 @@ const { clear, debug } = flags;
 		await questions();
 		config.useDocker && (await copyHerokuFiles());
 		await installDependecies();
+		await generateDatabase();
+		await createHerokuApp();
+		await createHerokuEnv();
+		await setupHerokuPostgres();
 		await goodbye();
 	} catch (error) {
+		console.log(error);
 		await goodbye(false);
 	}
 })();

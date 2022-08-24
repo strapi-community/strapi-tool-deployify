@@ -25,9 +25,7 @@ const installDependecies = async () => {
 		]);
 		spinner.stopAndPersist({
 			symbol: `📦`,
-			text: ` ${chalk.green(
-				config.dbtype.toUpperCase()
-			)} dependencies installed with ${chalk.bold.yellow(
+			text: ` Installing dependencies installed with ${chalk.bold.yellow(
 				config.packageManager.toUpperCase()
 			)} \n`
 		});

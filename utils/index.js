@@ -18,7 +18,7 @@ const {
 	detectDownloadsAndStars,
 	detectHerokuCLI
 } = require(`./detection`);
-const getApiKey = require(`./apiKey`);
+const getApiKey = require(`../heroku/apiKey`);
 
 module.exports = {
 	yarnLockToPackageLock,

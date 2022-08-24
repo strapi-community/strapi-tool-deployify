@@ -8,18 +8,26 @@ const {
 } = require(`../utils`);
 
 const generateDatabase = async () => {
-	return `${
-		config.projectType === `ts` ? `export default` : `module.exports = `
-	} ({ env }) => ({
+	return `
+	const parse = require('pg-connection-string').parse;
+const config = parse(process.env.DATABASE_URL);
+
+${
+	config.projectType === `ts` ? `export default` : `module.exports = `
+} ({ env }) => ({
 	connection: {
-		client: '${config.dbtype === `postgresql` ? `postgres` : `mysql`}',
+		client: 'postgres',
 		connection: {
-		host: env('DATABASE_HOST', '${config.dbhost}'),
-			port: env.int('DATABASE_PORT', ${config.dbport}),
-			database: env('DATABASE_NAME', '${config.dbname}'),
-			user: env('DATABASE_USERNAME', '${config.dbuser}'),
-			password: env('DATABASE_PASSWORD', '${config.dbpassword}'),
-			ssl: env.bool('DATABASE_SSL', false)
+		 host: config.host,
+      port: config.port,
+      database: config.database,
+      user: config.user,
+      password: config.password,
+      ssl: {
+        rejectUnauthorized: false
+      },
+    },
+    debug: false,
 		}
 	}
 });

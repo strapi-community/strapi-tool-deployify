@@ -43,64 +43,17 @@ For more information on contributing please see [the contrib message below](#con
 npx @strapi-community/herokufy
 ```
 
-You can also call it directly with arguments
-
-```bash
-npx @strapi-community/herokufy new --dbclient=mysql --dbhost=localhost --dbport=1234 --dbname=strapi --dbusername=strapi --dbpassword=strapi --projecttype=js --packagemanager=yarn --usecompose=false --env=both
-```
-
-### 🤖 Using CLI Arguments
-
-Please note the `new` keyword is required for this to take effect.
-
-```markdown
-npx @strapi-community/herokufy new
---dbtype=<dbclient>
---dbhost=<dbhost>
---dbport=<dbport>
---dbname=<dbname>
---dbusername=<dbusername>
---dbpassword=<dbpassword>
---projecttype=<projecttype>
---packagemanager=<packagemanager>
---usecompose=<usecompose>
---env=<env>
-```
-
-```markdown
-| 💻 Command     | 💬 Value                                | 🦄 Type | 🐲 Default    |
-| -------------- | --------------------------------------- | ------- | ------------- |
-| dbclient       | `postgres` \| `mysql` \| `mariadb`      | String  | `postgres`    |
-| dbhost         |                                         | String  | `localhost`   |
-| dbport         | `5432` \| `3306`                        | Number  | `5432`        |
-| dbname         |                                         | String  | `strapi`      |
-| dbusername     |                                         | String  | `strapi`      |
-| dbpassword     |                                         | String  |               |
-| projecttype    | `ts` \| `js`                            | String  | `js`          |
-| packagemanager | `yarn` \| `npm`                         | String  | `yarn`        |
-| usecompose     | `true` \| `false`                       | Boolean | `false`       |
-| env            | `development` \| `production` \| `both` | String  | `development` |
-```
-
 ### 🧹 Resetting project
 
 ```bash
 @strapi-community/herokufy reset
 ```
 
-_Note_ that **RESET** will delete the `config/env` folder with all of it's content
+_Note_ that **RESET** will delete the `everything` from heroku related to the projectname.
 
 ## 🚀 Features
 
-- Easy add support for docker
-- Auto detects `yarn` or `npm` in your project
-- Build a docker-compose file
-
-## 🐳 Docker-compose support
-
-- Postgres 12
-- MySQL 5.7
-- MariaDB
+- Easy deploy of your project to heroku
 
 ## 🎗 Contributing
 

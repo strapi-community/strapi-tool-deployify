@@ -25,11 +25,21 @@ module.exports = async () => {
 					title: `Production`,
 					value: `production`,
 					description: `Creates a production environment`
+				}
+			]
+		},
+		{
+			type: `select`,
+			name: `herokuRegion`,
+			message: `What region do you want to deploy to? 🌍`,
+			choices: [
+				{
+					title: `US`,
+					value: `us`
 				},
 				{
-					title: `Both`,
-					value: `both`,
-					description: `Creates development and production enviroments`
+					title: `EU`,
+					value: `eu`
 				}
 			]
 		},
@@ -43,7 +53,9 @@ module.exports = async () => {
 	]);
 	setConfig({
 		...config,
+		...questions,
 		projectName: questions.projectName.toLowerCase(),
 		env: questions.env.toLowerCase()
 	});
+	console.log(config);
 };
