@@ -1,7 +1,7 @@
 <div align="center">
 <h1>@Strapi-community/herokufy</h1>
 	
-<p style="margin-top: 0;">Add docker support for a Strapi Project with ease 🚀</p>
+<p style="margin-top: 0;">Easily deploy a Strapi Project to heroku 🚀</p>
 	
 <p>
   <a href="https://discord.strapi.io">

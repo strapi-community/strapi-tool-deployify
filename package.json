@@ -1,6 +1,6 @@
 {
 	"name": "@strapi-community/herokufy",
-	"description": "Easy deploy a Strapi Project to heroku",
+	"description": "Easily deploy a Strapi Project to heroku",
 	"version": "0.0.0-development",
 	"license": "MIT",
 	"bin": {

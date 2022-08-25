@@ -68,7 +68,7 @@ const checkForExistingFolder = async type => {
 	spinner.stopAndPersist({
 		symbol: `🕵️‍♀️`,
 		text: ` Detected ${chalk.yellow(
-			`config/env/${type}.${config.projectType}`
+			`config/env/${type}/${type}.${config.projectType}`
 		)}, backing up to ${chalk.yellow(backupFileName)} \n`
 	});
 	try {
