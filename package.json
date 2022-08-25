@@ -1,6 +1,6 @@
 {
 	"name": "@strapi-community/deployify",
-	"description": "Easily deploy a Strapi Project to heroku",
+	"description": "Easily deploy a Strapi Project to cloud platforms",
 	"version": "0.0.0-development",
 	"license": "MIT",
 	"bin": {

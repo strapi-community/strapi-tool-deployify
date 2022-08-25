@@ -1,7 +1,7 @@
 <div align="center">
 <h1>@Strapi-community/deployify</h1>
 	
-<p style="margin-top: 0;">Easily deploy a Strapi Project to heroku 🚀</p>
+<p style="margin-top: 0;">Easily deploy a Strapi Project to cloud platforms 🚀</p>
 	
 <p>
   <a href="https://discord.strapi.io">
