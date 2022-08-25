@@ -1,5 +1,6 @@
 const shell = require(`shelljs`);
 const { setConfig } = require(`../utils/config`);
+
 const getApiKey = async () => {
 	const herokuApiToken = await shell
 		.cat(`~/.netrc `)
@@ -10,4 +11,4 @@ const getApiKey = async () => {
 	setConfig({ herokuApiToken });
 };
 
-module.exports = getApiKey;
+module.exports = { getApiKey };

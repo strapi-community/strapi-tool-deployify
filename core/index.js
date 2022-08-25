@@ -1,11 +1,13 @@
 const { copyHerokuFiles } = require(`./copyFiles`);
 const installDependecies = require(`./dependencies`);
-const { checkAndBackupDB, generateDatabase } = require(`./database`);
 const questions = require(`./questions`);
+const { generateServer, generateDatabase } = require(`./generateFiles`);
+const { configSetup } = require(`./configSetup`);
 module.exports = {
 	copyHerokuFiles,
-	checkAndBackupDB,
 	generateDatabase,
 	installDependecies,
-	questions
+	questions,
+	generateServer,
+	configSetup
 };

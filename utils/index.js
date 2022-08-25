@@ -2,12 +2,9 @@ const generateError = require(`./bugreport`);
 const goodbye = require(`./goodbye`);
 const { setConfig, config } = require(`./config`);
 const {
-	yarnLockToPackageLock,
-	checkForDataFolder,
 	spinner,
 	replace,
 	chalk,
-	execa,
 	access,
 	constants,
 	copyFile
@@ -18,15 +15,11 @@ const {
 	detectDownloadsAndStars,
 	detectHerokuCLI
 } = require(`./detection`);
-const getApiKey = require(`../heroku/apiKey`);
 
 module.exports = {
-	yarnLockToPackageLock,
-	checkForDataFolder,
 	spinner,
 	replace,
 	chalk,
-	execa,
 	access,
 	constants,
 	copyFile,
@@ -37,6 +30,5 @@ module.exports = {
 	setConfig,
 	config,
 	detectDownloadsAndStars,
-	getApiKey,
 	detectHerokuCLI
 };

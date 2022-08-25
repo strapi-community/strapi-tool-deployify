@@ -1,10 +1,10 @@
 const path = require(`path`);
-const shell = require(`shelljs`);
 const { spinner, chalk, constants, access } = require(`./utils`);
+const shell = require(`shelljs`);
 const { setConfig, config } = require(`./config`);
 const fetch = require(`node-fetch`);
 const child_process = require(`child_process`);
-const getApiKey = require(`../heroku/apiKey`);
+const { getApiKey } = require(`../heroku/apiKey`);
 
 const detectDownloadsAndStars = async () => {
 	spinner.start(` 🦄  ${chalk.yellow(`Prepping some magic`)} `);
@@ -18,7 +18,10 @@ const detectDownloadsAndStars = async () => {
 
 		const { downloads } = await npm.json();
 		const { stargazers_count } = await github.json();
-		setConfig({ npmDownloads: downloads, githubStars: stargazers_count });
+		setConfig({
+			npmDownloads: downloads || 0,
+			githubStars: stargazers_count || 0
+		});
 
 		spinner.stopAndPersist({
 			symbol: `🎉`,

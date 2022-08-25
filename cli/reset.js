@@ -1,22 +1,23 @@
 const { unlink, rm } = require(`fs/promises`);
-const { access, constants, spinner, chalk } = require(`../utils`);
+const {
+	access,
+	constants,
+	spinner,
+	chalk,
+	setConfig,
+	config
+} = require(`../utils`);
+const { destroyHerokuApp } = require(`../heroku`);
+const prompts = require(`prompts`);
 
 const FILES_TO_REMOVE = [
 	{
 		directory: `${process.cwd()}`,
-		file: `Dockerfile`
+		file: `server.${config.projectType}`
 	},
 	{
 		directory: `${process.cwd()}`,
-		file: `Dockerfile.prod`
-	},
-	{
-		directory: `${process.cwd()}`,
-		file: `.dockerignore`
-	},
-	{
-		directory: `${process.cwd()}`,
-		file: `docker-compose.yml`
+		file: `database.${config.projectType}`
 	}
 ];
 
@@ -63,4 +64,18 @@ const resetDirectories = async () => {
 	}
 };
 
-module.exports = resetFiles;
+const resetHeroku = async () => {
+	setConfig(
+		await prompts([
+			{
+				type: `text`,
+				name: `projectName`,
+				message: `Project Name`,
+				validate: value => (value ? true : `Project name is required`)
+			}
+		])
+	);
+	destroyHerokuApp();
+};
+
+module.exports = { resetFiles, resetHeroku };

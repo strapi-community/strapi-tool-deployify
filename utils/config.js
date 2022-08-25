@@ -12,13 +12,17 @@ const _config = {
 	useDocker: false,
 	quickStart: false,
 	herokuCLI: false,
+	projectType: `js`,
 	herokuApiToken: ``,
 	projectName: ``,
 	herokuRegion: `eu`,
-	appKeys: crypto.randomBytes(64).toString(`hex`),
-	apiTokenSalt: crypto.randomBytes(32).toString(`hex`),
-	adminJwtSecret: crypto.randomBytes(32).toString(`hex`),
-	jwtSecret: crypto.randomBytes(32).toString(`hex`)
+	files: [`server`, `database`],
+	strapiSecrets: {
+		appKeys: crypto.randomBytes(64).toString(`hex`),
+		apiTokenSalt: crypto.randomBytes(32).toString(`hex`),
+		adminJwtSecret: crypto.randomBytes(32).toString(`hex`),
+		jwtSecret: crypto.randomBytes(32).toString(`hex`)
+	}
 };
 const setConfig = newConfig => Object.assign(_config, newConfig);
 const config = _config;

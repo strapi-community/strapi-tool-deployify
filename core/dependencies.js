@@ -1,7 +1,7 @@
 const {
 	spinner,
 	chalk,
-	execa,
+	shell,
 	access,
 	constants,
 	generateError,
@@ -18,11 +18,12 @@ const installDependecies = async () => {
 				config.packageManager.toUpperCase()
 			)}...`
 		);
-		await execa(config.packageManager, [
-			`${config.packageManager === `yarn` ? `add` : `install`}`,
-			`pg`,
-			`pg-connection-string`
-		]);
+		// shell.exec(
+		// 	config.packageManager,
+		// 	`${config.packageManager === `yarn` ? `add` : `install`}`,
+		// 	`pg`,
+		// 	`pg-connection-string`
+		// );
 		spinner.stopAndPersist({
 			symbol: `📦`,
 			text: ` Installing dependencies installed with ${chalk.bold.yellow(
@@ -39,12 +40,13 @@ const checkForOldDependecies = async command => {
 		spinner.start(` 📦 Checking for old dependencies...`);
 		await access(`package.json`, constants.R_OK);
 		spinner.start(` 📦 Cleaning up old dependencies...`);
-
-		await execa(`${config.packageManager}`, [
-			`${command}`,
-			`pg`,
-			`pg-connection-string`
-		]);
+		const pkg = require(`${process.cwd()}/package.json`);
+		console.log(pkg);
+		// await execa(`${config.packageManager}`, [
+		// 	`${command}`,
+		// 	`pg`,
+		// 	`pg-connection-string`
+		// ]);
 
 		spinner.stopAndPersist({
 			symbol: `📦`,
