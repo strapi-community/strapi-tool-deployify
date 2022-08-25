@@ -14,13 +14,13 @@ const configSetup = async () => {
 	for await (const file of config.files) {
 		await checkForExistingFolder(file);
 		await _configSetup(file);
+		spinner.stopAndPersist({
+			symbol: `⚙️`,
+			text: ` Added configuration to ${chalk.bold.green(
+				`${file}.${config.projectType}`
+			)} \n`
+		});
 	}
-	spinner.stopAndPersist({
-		symbol: `💾`,
-		text: ` Added ${chalk.bold.green()} configuration to database.${
-			config.projectType
-		} \n`
-	});
 };
 
 const _configSetup = async type => {
@@ -45,6 +45,9 @@ const _configSetup = async type => {
 };
 
 const checkForExistingFolder = async type => {
+	const backupFileName = `${type}.backup${Math.floor(
+		1000 + Math.random() * 9000
+	)}`;
 	const oldPath = path.join(
 		process.cwd(),
 		`config`,
@@ -60,11 +63,13 @@ const checkForExistingFolder = async type => {
 		`config`,
 		`env`,
 		config.env,
-		`${type}.backup${Math.floor(1000 + Math.random() * 9000)}`
+		backupFileName
 	);
 	spinner.stopAndPersist({
 		symbol: `🕵️‍♀️`,
-		text: ` Detected config/env/${type}.${config.projectType}, made a backup at 👉 config/env/${type}/${type}.${config.projectType} \n`
+		text: ` Detected ${chalk.yellow(
+			`config/env/${type}.${config.projectType}`
+		)}, backing up to ${chalk.yellow(backupFileName)} \n`
 	});
 	try {
 		await access(oldPath);

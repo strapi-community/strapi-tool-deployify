@@ -7,18 +7,18 @@ const _createEnv = async () => {
 		{ silent: true }
 	);
 	spinner.stopAndPersist({
-		symbol: `🦄`,
-		text: ` Setting up your ${chalk.magenta.bold(`Heroku`)} ${
-			config.projectName
-		} project variables \n`
+		symbol: `⚙️`,
+		text: `  Configuring ${chalk.magenta.bold(
+			`${config.projectName.toUpperCase()}'s`
+		)} enviroment variables ${_herokuWithRegion()}`
 	});
 };
 const _createApp = async () => {
 	spinner.stopAndPersist({
 		symbol: `🌍`,
-		text: ` Setting up ${chalk.magenta.bold(
-			`${config.projectName.toUpperCase()} Heroku`
-		)} app on Heroku (${chalk.blue.bold(config.herokuRegion.toUpperCase())}) \n`
+		text: ` Spinning up ${chalk.magenta.bold(
+			config.projectName.toUpperCase()
+		)} app ${_herokuWithRegion()}`
 	});
 	shell.exec(
 		`HEROKU_API_KEY="${config.herokuApiToken}" heroku create ${config.projectName} --region ${config.herokuRegion}`
@@ -31,10 +31,14 @@ const _createDatabase = async () => {
 		{ silent: true }
 	);
 	spinner.stopAndPersist({
-		symbol: `💾`,
-		text: ` Spinning up a PostgresSQL database and connecting it to ${chalk.magenta.bold(
+		symbol: `🧚`,
+		text: ` Spinning up a PostgresSQL database ${_herokuWithRegion()} `
+	});
+	spinner.stopAndPersist({
+		symbol: `🔗`,
+		text: ` Linking your new Database to ${chalk.magenta.bold(
 			config.projectName.toUpperCase()
-		)}  on ${chalk.magenta.bold(`Heroku`)}  \n`
+		)} project ${_herokuWithRegion()}`
 	});
 };
 
@@ -43,7 +47,7 @@ const destroyHerokuApp = async () => {
 		symbol: `💀`,
 		text: `Tearing down ${chalk.magenta.bold(
 			config.projectName.toUpperCase()
-		)} on Heroku  \n`
+		)} ${_herokuWithRegion()}`
 	});
 	shell.exec(
 		`HEROKU_API_KEY="${config.herokuApiToken}" heroku apps:destroy ${config.projectName} --confirm ${config.projectName}`
@@ -56,6 +60,12 @@ const destroyHerokuApp = async () => {
 	});
 	shell.exec(`HEROKU_API_KEY="${config.herokuApiToken}" heroku apps`, {});
 	console.log(`\n`);
+};
+
+const _herokuWithRegion = () => {
+	return `on ${chalk.magenta.bold(`Heroku`)} (${chalk.blue.bold(
+		config.herokuRegion.toUpperCase()
+	)}) \n`;
 };
 
 const herokuSetup = async () => {
