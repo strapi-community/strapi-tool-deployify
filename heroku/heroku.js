@@ -1,14 +1,13 @@
 const { config, spinner, chalk } = require(`../utils`);
 const shell = require(`shelljs`);
 const _createEnv = async () => {
-	console.log(`\n`);
 	shell.exec(
 		`HEROKU_API_KEY="${config.herokuApiToken}" heroku config:set WEBSITE_URL=$(heroku info -s | grep web_url | cut -d= -f2) APP_KEYS=${config.strapiSecrets.appKeys} API_TOKEN_SALT=${config.strapiSecrets.apiTokenSalt} ADMIN_JWT_SECRET=${config.strapiSecrets.adminJwtSecret} JWT_SECRET=${config.strapiSecrets.jwtSecret} NODE_ENV=${config.env}  --app ${config.projectName}`,
 		{ silent: true }
 	);
 	spinner.stopAndPersist({
 		symbol: `⚙️`,
-		text: `  Configuring ${chalk.magenta.bold(
+		text: ` Configuring ${chalk.magenta.bold(
 			`${config.projectName.toUpperCase()}'s`
 		)} enviroment variables ${_herokuWithRegion()}`
 	});
@@ -41,6 +40,18 @@ const _createDatabase = async () => {
 		)} project ${_herokuWithRegion()}`
 	});
 };
+const _useContainer = async () => {
+	shell.exec(
+		`HEROKU_API_KEY="${config.herokuApiToken}" stack:set container  --app ${config.projectName}`,
+		{ silent: true }
+	);
+	spinner.stopAndPersist({
+		symbol: `🐳`,
+		text: `  Configuring ${chalk.magenta.bold(
+			`${config.projectName.toUpperCase()}'s`
+		)} to use Docker ${_herokuWithRegion()}`
+	});
+};
 
 const destroyHerokuApp = async () => {
 	spinner.stopAndPersist({
@@ -70,6 +81,7 @@ const _herokuWithRegion = () => {
 
 const herokuSetup = async () => {
 	_createApp();
+	config.useDocker && _useContainer();
 	_createEnv();
 	_createDatabase();
 };

@@ -16,7 +16,7 @@ const configSetup = async () => {
 		await _configSetup(file);
 		spinner.stopAndPersist({
 			symbol: `⚙️`,
-			text: ` Added configuration to ${chalk.bold.green(
+			text: `  Added configuration to ${chalk.bold.green(
 				`${file}.${config.projectType}`
 			)} \n`
 		});

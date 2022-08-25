@@ -46,8 +46,15 @@ module.exports = async () => {
 			type: `confirm`,
 			message: `Are you using Docker for deployment? 🐳`,
 			initial: false
+		},
+		{
+			type: prev => (prev.useDocker ? `confirm` : null),
+			name: `useDockerTool`,
+			message: `Do you have a Docker.prod file or do you want us to create one?`,
+			initial: false
 		}
 	]);
+	console.log(`\n`);
 	setConfig({
 		...config,
 		...questions,

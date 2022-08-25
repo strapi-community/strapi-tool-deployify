@@ -4,6 +4,7 @@ const { constants } = require(`fs`);
 const ora = require(`ora`);
 const spinner = ora({ text: `` });
 const chalk = require(`chalk`);
+
 module.exports = {
 	spinner,
 	replace,

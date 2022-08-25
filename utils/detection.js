@@ -78,9 +78,9 @@ const detectPackageManager = async () => {
 			return;
 		}
 		await access(`yarn.lock`, constants.R_OK);
-		config.packageManager = `yarn`;
+		setConfig({ packageManager: `yarn` });
 	} catch (error) {
-		config.packageManager = `npm`;
+		setConfig({ packageManager: `npm` });
 	}
 	if (!config.quickStart) {
 		spinner.stopAndPersist({

@@ -18,7 +18,7 @@ const {
 	detectProjectType,
 	config
 } = require(`./utils`);
-const { herokuSetup } = require(`./heroku`);
+const { herokuSetup, useTool } = require(`./heroku`);
 const { installDependecies, copyHerokuFiles, configSetup } = require(`./core`);
 
 const input = cli.input;
@@ -42,7 +42,10 @@ const { clear, debug } = flags;
 		await detectHerokuCLI();
 		await message(`This tool will only create NEW project on heroku`);
 		await questions();
-		config.useDocker && (await copyHerokuFiles());
+		if (config.useDocker) {
+			await copyHerokuFiles();
+			await useTool();
+		}
 		await configSetup();
 		await installDependecies();
 		await herokuSetup();
