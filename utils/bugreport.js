@@ -3,7 +3,7 @@ const newGithubIssueUrl = require(`new-github-issue-url`);
 
 const generateError = async error => {
 	const url = newGithubIssueUrl({
-		repo: `strapi-tool-herokufy`,
+		repo: `strapi-tool-deployify`,
 		user: `strapi-community`,
 		title: `Error: ${error.message}`,
 		template: `BUG_REPORT.md`,

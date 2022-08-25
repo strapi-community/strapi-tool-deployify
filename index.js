@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * strapi-tool-strapi-tool-herokufy
+ * strapi-tool-strapi-tool-deployify
  * Add docker support for a Strapi Project
  *
  * @author Simen Daehlin <https://dehlin.dev>

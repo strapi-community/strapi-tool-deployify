@@ -2,7 +2,7 @@ const path = require(`path`);
 const crypto = require(`crypto`);
 
 const _config = {
-	url: `https://github.com/strapi-community/strapi-tool-herokufy`,
+	url: `https://github.com/strapi-community/strapi-tool-deployify`,
 	providersDir: path.join(__dirname, `../providers`),
 	provider: `heroku`,
 	outDir: path.join(process.cwd()),

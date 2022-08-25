@@ -1,15 +1,15 @@
 {
-	"name": "@strapi-community/herokufy",
+	"name": "@strapi-community/deployify",
 	"description": "Easily deploy a Strapi Project to heroku",
 	"version": "0.0.0-development",
 	"license": "MIT",
 	"bin": {
-		"strapi-strapi-tool-herokufy": "index.js",
-		"strapi-herokufy": "index.js"
+		"strapi-strapi-tool-deployify": "index.js",
+		"strapi-deployify": "index.js"
 	},
 	"author": "Simen Daehlin <simen.dehlin@gmail.com> (https://dehlin.dev)",
 	"keywords": [
-		"strapi-tool-herokufy",
+		"strapi-tool-deployify",
 		"Simen Daehlin",
 		"Strapi",
 		"Strapi Community"
@@ -55,13 +55,13 @@
 	"main": "index.js",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/strapi-community/strapi-tool-herokufy.git"
+		"url": "https://github.com/strapi-community/strapi-tool-deployify.git"
 	},
 	"bugs": {
-		"url": "https://github.com/strapi-community/strapi-tool-herokufy/issues"
+		"url": "https://github.com/strapi-community/strapi-tool-deployify/issues"
 	},
-	"homepage": "https://github.com/strapi-community/strapi-tool-herokufy#readme",
-	"url": "https://github.com/strapi-community/strapi-tool-herokufy",
+	"homepage": "https://github.com/strapi-community/strapi-tool-deployify#readme",
+	"url": "https://github.com/strapi-community/strapi-tool-deployify",
 	"config": {
 		"commitizen": {
 			"path": "./node_modules/cz-conventional-changelog"

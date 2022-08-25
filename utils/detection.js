@@ -10,10 +10,10 @@ const detectDownloadsAndStars = async () => {
 	spinner.start(` 🦄  ${chalk.yellow(`Prepping some magic`)} `);
 	try {
 		const npm = await fetch(
-			`https://api.npmjs.org/downloads/point/last-month/@strapi-community/herokufy`
+			`https://api.npmjs.org/downloads/point/last-month/@strapi-community/deployify`
 		);
 		const github = await fetch(
-			`https://api.github.com/repos/strapi-community/strapi-tool-herokufy`
+			`https://api.github.com/repos/strapi-community/strapi-tool-deployify`
 		);
 
 		const { downloads } = await npm.json();

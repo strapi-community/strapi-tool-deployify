@@ -1,5 +1,5 @@
 <div align="center">
-<h1>@Strapi-community/herokufy</h1>
+<h1>@Strapi-community/deployify</h1>
 	
 <p style="margin-top: 0;">Easily deploy a Strapi Project to heroku 🚀</p>
 	
@@ -7,11 +7,11 @@
   <a href="https://discord.strapi.io">
     <img src="https://img.shields.io/discord/811989166782021633?color=blue&label=strapi-discord" alt="Strapi Discord">
   </a>
-  <a href="https://www.npmjs.org/package/@strapi-community/herokufy">
-    <img src="https://img.shields.io/npm/v/@strapi-community/herokufy/latest.svg" alt="NPM Version" />
+  <a href="https://www.npmjs.org/package/@strapi-community/deployify">
+    <img src="https://img.shields.io/npm/v/@strapi-community/deployify/latest.svg" alt="NPM Version" />
   </a>
-  <a href="https://www.npmjs.org/package/@strapi-community/herokufy">
-    <img src="https://img.shields.io/npm/dm/@strapi-community/herokufy" alt="Monthly download on NPM" />
+  <a href="https://www.npmjs.org/package/@strapi-community/deployify">
+    <img src="https://img.shields.io/npm/dm/@strapi-community/deployify" alt="Monthly download on NPM" />
   </a>
 </p>
 </div>
@@ -40,13 +40,13 @@ For more information on contributing please see [the contrib message below](#con
 ## ✨ Usage
 
 ```bash
-npx @strapi-community/herokufy
+npx @strapi-community/deployify
 ```
 
 ### 🧹 Resetting project
 
 ```bash
-@strapi-community/herokufy reset
+@strapi-community/deployify reset
 ```
 
 _Note_ that **RESET** will delete the `everything` from heroku related to the projectname.
@@ -67,8 +67,8 @@ Give a star if this project helped you.
 
 ## 🔗 Links
 
-- [NPM package](https://www.npmjs.com/package/@strapi-community/herokufy)
-- [GitHub repository](https://github.com/strapi-community/strapi-tool-herokufy)
+- [NPM package](https://www.npmjs.com/package/@strapi-community/deployify)
+- [GitHub repository](https://github.com/strapi-community/strapi-tool-deployify)
 
 ## 🌎 Community support
 

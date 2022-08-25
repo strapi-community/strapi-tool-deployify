@@ -19,7 +19,7 @@ const commands = {
 };
 
 const helpText = meowHelp({
-	name: `strapi-tool-herokufy`,
+	name: `strapi-tool-deployify`,
 	flags,
 	commands
 });

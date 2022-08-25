@@ -7,7 +7,7 @@ const goodbye = async (quit = false) => {
 		spinner.stopAndPersist({
 			symbol: `☝️`,
 			text: `  ${chalk.yellow(`Strapi`)} is now ${chalk.bold.blueBright(
-				`herokufyd`
+				`deployifyd`
 			)} 🐳 - have a look at the logs above for more info. 🚀 \n`
 		});
 	}

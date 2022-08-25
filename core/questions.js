@@ -4,6 +4,43 @@ const { setConfig, config } = require(`../utils`);
 module.exports = async () => {
 	const questions = await prompts([
 		{
+			type: `select`,
+			name: `providers`,
+			message: `What provider do you want to use?`,
+			warn: `Not enabled yet`,
+			choices: [
+				{
+					title: `Heroku`,
+					value: `heroku`,
+					description: `Heroku Platform`
+				},
+				{
+					title: `AWS`,
+					value: `aws`,
+					description: `Amazon Web Services`,
+					disabled: true
+				},
+				{
+					title: `Digital Ocean`,
+					value: `digitalocean`,
+					description: `Digital Ocean App Platform`,
+					disabled: true
+				},
+				{
+					title: `Render`,
+					value: `render`,
+					description: `Render`,
+					disabled: true
+				},
+				{
+					title: `Google`,
+					value: `Google`,
+					description: `Google Cloud Platform`,
+					disabled: true
+				}
+			]
+		},
+		{
 			type: `text`,
 			name: `projectName`,
 			message: `Project Name`,

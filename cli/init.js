@@ -5,7 +5,7 @@ const unhandled = require(`cli-handle-unhandled`);
 module.exports = ({ clear = true }) => {
 	unhandled();
 	welcome({
-		title: `@strapi-community/herokufy`,
+		title: `@strapi-community/deployify`,
 		tagLine: `by Simen Daehlin`,
 		description: `${pkg.description}\n${pkg.url}`,
 		version: pkg.version,
