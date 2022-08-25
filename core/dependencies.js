@@ -1,63 +1,57 @@
+const shell = require(`shelljs`);
 const {
 	spinner,
 	chalk,
-	shell,
 	access,
 	constants,
 	generateError,
 	config
 } = require(`../utils`);
-
 const installDependecies = async () => {
 	try {
-		await checkForOldDependecies(
-			config.packageManager === `yarn` ? `remove` : `uninstall`
-		);
+		const dependenciesInstalled = await checkForOldDependecies();
+		if (dependenciesInstalled) {
+			spinner.stopAndPersist({
+				symbol: `📦`,
+				text: ` All dependencies are installed not doing anything \n`
+			});
+			return;
+		}
+
 		spinner.start(
 			` 📦 Installing dependencies using ${chalk.bold.yellow(
 				config.packageManager.toUpperCase()
 			)}...`
 		);
-		// shell.exec(
-		// 	config.packageManager,
-		// 	`${config.packageManager === `yarn` ? `add` : `install`}`,
-		// 	`pg`,
-		// 	`pg-connection-string`
-		// );
-		spinner.stopAndPersist({
-			symbol: `📦`,
-			text: ` Installing dependencies installed with ${chalk.bold.yellow(
-				config.packageManager.toUpperCase()
-			)} \n`
-		});
+
+		shell.exec(
+			`${config.packageManager} ${
+				config.packageManager === `yarn` ? `add` : `install`
+			} pg pg-connection-string`,
+			{ silent: true }
+		);
 	} catch (error) {
-		console.log(error);
 		await generateError(error);
 	}
 };
-const checkForOldDependecies = async command => {
+const checkForOldDependecies = async () => {
 	try {
 		spinner.start(` 📦 Checking for old dependencies...`);
-		await access(`package.json`, constants.R_OK);
-		spinner.start(` 📦 Cleaning up old dependencies...`);
-		const pkg = require(`${process.cwd()}/package.json`);
-		console.log(pkg);
-		// await execa(`${config.packageManager}`, [
-		// 	`${command}`,
-		// 	`pg`,
-		// 	`pg-connection-string`
-		// ]);
 
-		spinner.stopAndPersist({
-			symbol: `📦`,
-			text: ` Cleaned up old dependencies \n`
-		});
+		await access(`package.json`, constants.R_OK);
+
+		const pkg = require(`${process.cwd()}/package.json`);
+		if (pkg.dependencies[`pg`] || pkg.dependencies[`pg-connection-string`]) {
+			return true;
+		}
+		return false;
 	} catch (error) {
+		console.log(error);
 		spinner.stopAndPersist({
 			symbol: `📦`,
-			text: ` No old dependencies to clean up \n`
+			text: ` We can't access package.json \n`
 		});
-		return;
+		return true;
 	}
 };
 module.exports = installDependecies;
