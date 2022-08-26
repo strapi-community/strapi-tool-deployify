@@ -4,7 +4,7 @@ const shell = require(`shelljs`);
 const { setConfig, config } = require(`./config`);
 const fetch = require(`node-fetch`);
 const child_process = require(`child_process`);
-const { getApiKey } = require(`../heroku/apiKey`);
+const { getApiKey } = require(`../providers/heroku/apiKey`);
 
 const detectDownloadsAndStars = async () => {
 	spinner.start(` 🦄  ${chalk.yellow(`Prepping some magic`)} `);

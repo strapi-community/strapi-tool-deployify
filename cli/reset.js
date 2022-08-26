@@ -7,7 +7,7 @@ const {
 	setConfig,
 	config
 } = require(`../utils`);
-const { destroyHerokuApp } = require(`../heroku`);
+const { destroyHerokuApp } = require(`../providers/heroku`);
 const prompts = require(`prompts`);
 
 const FILES_TO_REMOVE = [

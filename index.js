@@ -18,7 +18,7 @@ const {
 	detectProjectType,
 	config
 } = require(`./utils`);
-const { herokuSetup, useTool } = require(`./heroku`);
+const { herokuSetup, useTool } = require(`./providers/heroku`);
 const { installDependecies, copyHerokuFiles, configSetup } = require(`./core`);
 
 const input = cli.input;

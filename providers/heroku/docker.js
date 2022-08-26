@@ -1,5 +1,11 @@
 const shell = require(`shelljs`);
-const { config, spinner, chalk, replace, generateError } = require(`../utils`);
+const {
+	config,
+	spinner,
+	chalk,
+	replace,
+	generateError
+} = require(`../../utils`);
 
 const useTool = async () => {
 	shell.exec(

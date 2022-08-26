@@ -1,4 +1,4 @@
-const { config, spinner, chalk } = require(`../utils`);
+const { config, spinner, chalk } = require(`../../utils`);
 const shell = require(`shelljs`);
 const _createEnv = async () => {
 	shell.exec(
