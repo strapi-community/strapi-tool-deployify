@@ -53,7 +53,22 @@ _Note_ that **RESET** will delete the `everything` from heroku related to the pr
 
 ## 🚀 Features
 
-- Easy deploy of your project to heroku
+- Easy deploy of your project to some cloud platforms
+
+## 🖐 Requirements
+
+Supported Strapi Versions:
+
+| Strapi Version  | Is Compatible | Last Tested |
+| --------------- | ------------- | ----------- |
+| v3.x.x          | ❌            | Never       |
+| v4.0.x          | ✅            | Never       |
+| v4.1.x          | ✅            | Never       |
+| v4.2.x          | ✅            | Never       |
+| v4.3.x          | ✅            | Never       |
+| Future Versions | ✅            | Never       |
+
+**This tool will not work with Strapi v3 projects as it utilizes the V4 folder format that don't exist in the v3!**
 
 ## 🎗 Contributing
 
