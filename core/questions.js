@@ -5,7 +5,7 @@ module.exports = async () => {
 	const questions = await prompts([
 		{
 			type: `select`,
-			name: `providers`,
+			name: `provider`,
 			message: `What provider do you want to use?`,
 			warn: `Not enabled yet`,
 			choices: [
@@ -13,6 +13,11 @@ module.exports = async () => {
 					title: `Heroku`,
 					value: `heroku`,
 					description: `Heroku Platform`
+				},
+				{
+					title: `Render`,
+					value: `render`,
+					description: `Render`
 				},
 				{
 					title: `AWS`,
@@ -24,12 +29,6 @@ module.exports = async () => {
 					title: `Digital Ocean`,
 					value: `digitalocean`,
 					description: `Digital Ocean App Platform`,
-					disabled: true
-				},
-				{
-					title: `Render`,
-					value: `render`,
-					description: `Render`,
 					disabled: true
 				},
 				{

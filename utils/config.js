@@ -15,7 +15,7 @@ const _config = {
 	herokuCLI: false,
 	packageManager: `yarn`,
 	projectType: `js`,
-	herokuApiToken: ``,
+	apiToken: ``,
 	projectName: ``,
 	herokuRegion: `eu`,
 	files: [`server`, `database`],

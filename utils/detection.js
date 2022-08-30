@@ -102,7 +102,7 @@ const detectHerokuCLI = async () => {
 			text: ` ${chalk.bold.magenta(`Heroku`)} CLI detected \n`
 		});
 		await getApiKey();
-		if (!config.herokuApiToken) {
+		if (!config.apiToken) {
 			child_process.execFileSync(`heroku`, [`login`], { stdio: `inherit` });
 			await getApiKey();
 		}

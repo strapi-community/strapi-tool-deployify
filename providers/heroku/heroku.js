@@ -2,7 +2,7 @@ const { config, spinner, chalk } = require(`../../utils`);
 const shell = require(`shelljs`);
 const _createEnv = async () => {
 	shell.exec(
-		`HEROKU_API_KEY="${config.herokuApiToken}" heroku config:set WEBSITE_URL=$(heroku info -s | grep web_url | cut -d= -f2) APP_KEYS=${config.strapiSecrets.appKeys} API_TOKEN_SALT=${config.strapiSecrets.apiTokenSalt} ADMIN_JWT_SECRET=${config.strapiSecrets.adminJwtSecret} JWT_SECRET=${config.strapiSecrets.jwtSecret} NODE_ENV=${config.env}  --app ${config.projectName}`,
+		`HEROKU_API_KEY="${config.apiToken}" heroku config:set WEBSITE_URL=$(heroku info -s | grep web_url | cut -d= -f2) APP_KEYS=${config.strapiSecrets.appKeys} API_TOKEN_SALT=${config.strapiSecrets.apiTokenSalt} ADMIN_JWT_SECRET=${config.strapiSecrets.adminJwtSecret} JWT_SECRET=${config.strapiSecrets.jwtSecret} NODE_ENV=${config.env}  --app ${config.projectName}`,
 		{ silent: true }
 	);
 	spinner.stopAndPersist({
@@ -20,13 +20,13 @@ const _createApp = async () => {
 		)} app ${_herokuWithRegion()}`
 	});
 	shell.exec(
-		`HEROKU_API_KEY="${config.herokuApiToken}" heroku create ${config.projectName} --region ${config.herokuRegion}`
+		`HEROKU_API_KEY="${config.apiToken}" heroku create ${config.projectName} --region ${config.herokuRegion}`
 	);
 };
 
 const _createDatabase = async () => {
 	shell.exec(
-		`HEROKU_API_KEY="${config.herokuApiToken}" heroku addons:create heroku-postgresql:hobby-dev --app ${config.projectName}`,
+		`HEROKU_API_KEY="${config.apiToken}" heroku addons:create heroku-postgresql:hobby-dev --app ${config.projectName}`,
 		{ silent: true }
 	);
 	spinner.stopAndPersist({
@@ -42,7 +42,7 @@ const _createDatabase = async () => {
 };
 const _useContainer = async () => {
 	shell.exec(
-		`HEROKU_API_KEY="${config.herokuApiToken}" stack:set container  --app ${config.projectName}`,
+		`HEROKU_API_KEY="${config.apiToken}" stack:set container  --app ${config.projectName}`,
 		{ silent: true }
 	);
 	spinner.stopAndPersist({
@@ -61,7 +61,7 @@ const destroyHerokuApp = async () => {
 		)} ${_herokuWithRegion()}`
 	});
 	shell.exec(
-		`HEROKU_API_KEY="${config.herokuApiToken}" heroku apps:destroy ${config.projectName} --confirm ${config.projectName}`
+		`HEROKU_API_KEY="${config.apiToken}" heroku apps:destroy ${config.projectName} --confirm ${config.projectName}`
 	);
 	spinner.stopAndPersist({
 		symbol: `🤠`,
@@ -69,7 +69,7 @@ const destroyHerokuApp = async () => {
 			`heroku`
 		)} here are the apps that are left on your heroku account 👇 \n`
 	});
-	shell.exec(`HEROKU_API_KEY="${config.herokuApiToken}" heroku apps`, {});
+	shell.exec(`HEROKU_API_KEY="${config.apiToken}" heroku apps`, {});
 	console.log(`\n`);
 };
 
