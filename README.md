@@ -20,10 +20,9 @@
 
 - [🚦 Current Status](#---current-status)
 - [✨ Usage](#--usage)
-  - [🤖 Using CLI Arguments](#---using-cli-arguments)
   - [🧹 Resetting project](#---resetting-project)
 - [🚀 Features](#---features)
-- [🐳 Docker-compose support](#---docker-compose-support)
+- [🖐 Requirements](#---requirements)
 - [🎗 Contributing](#---contributing)
 - [⭐️ Show your support](#---show-your-support)
 - [🔗 Links](#---links)
@@ -49,7 +48,7 @@ npx @strapi-community/deployify
 @strapi-community/deployify reset
 ```
 
-_Note_ that **RESET** will delete the `everything` from heroku related to the projectname.
+_Note_ that **RESET** will delete the `everything` from heroku related to the projectname, if heroku is selected as a provider
 
 ## 🚀 Features
 

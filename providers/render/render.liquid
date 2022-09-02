@@ -1,23 +1,23 @@
 services:
   - type: web
-    name: strapi
+    name: {{ name }}
     env: node
     plan: starter
     buildCommand: yarn install && yarn build
     startCommand: yarn start
     healthCheckPath: /_health
     disk:
-      name: strapi-uploads
+      name: {{ name }}-uploads
       mountPath: /opt/render/project/src/public/uploads
       sizeGB: 1
     envVars:
       - key: NODE_VERSION
-        value: 12.22.0
+        value: {{ nodeVersion } }
       - key: NODE_ENV
-        value: production
+        value: { { env } }
       - key: DATABASE_URL
         fromDatabase:
-          name: strapi
+          name: {{name}}
           property: connectionString
       - key: JWT_SECRET
         generateValue: true
@@ -29,5 +29,5 @@ services:
         generateValue: true
 
 databases:
-  - name: strapi
+  - name: {{ name }}
     plan: starter

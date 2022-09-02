@@ -5,15 +5,16 @@ const { setConfig } = require(`../utils`);
  * @returns true
  */
 const quickStart = async flags => {
-	const { projecttype, packagemanager, env } = flags;
+  const { projecttype, packagemanager, env, provider } = flags;
 
-	setConfig({
-		projectType: projecttype.toLowerCase(),
-		packageManager: packagemanager.toLowerCase(),
-		env: env.toLowerCase(),
-		quickStart: true
-	});
-	return true;
+  setConfig({
+    projectType: projecttype.toLowerCase(),
+    packageManager: packagemanager.toLowerCase(),
+    env: env.toLowerCase(),
+    quickStart: true,
+    provider: provider || ``
+  });
+  return true;
 };
 
 module.exports = quickStart;
