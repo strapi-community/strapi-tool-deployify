@@ -1,9 +1,9 @@
 const { config } = require(`../utils`);
 
 const generateServer = async () => {
-	return `${
-		config.projectType === `ts` ? `export default` : `module.exports = `
-	} ({ env }) => ({
+  return `${
+    config.projectType === `ts` ? `export default` : `module.exports = `
+  } ({ env }) => ({
  url: env('WEBSITE_URL'),
   port: process.env.PORT,
 });
@@ -11,11 +11,11 @@ const generateServer = async () => {
 };
 
 const generateDatabase = async () => {
-	return `const parse = require('pg-connection-string').parse;
+  return `const parse = require('pg-connection-string').parse;
 const config = parse(process.env.DATABASE_URL);
 
 ${
-	config.projectType === `ts` ? `export default` : `module.exports = `
+  config.projectType === `ts` ? `export default` : `module.exports = `
 } ({ env }) => ({
 connection: {
     client: "postgres",

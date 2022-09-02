@@ -2,13 +2,13 @@ const open = require(`open`);
 const newGithubIssueUrl = require(`new-github-issue-url`);
 
 const generateError = async error => {
-	const url = newGithubIssueUrl({
-		repo: `strapi-tool-deployify`,
-		user: `strapi-community`,
-		title: `Error: ${error.message}`,
-		template: `BUG_REPORT.md`,
-		assignee: `eventyret`,
-		body: `## 🐛  Bug Report
+  const url = newGithubIssueUrl({
+    repo: `strapi-tool-deployify`,
+    user: `strapi-community`,
+    title: `Error: ${error.message}`,
+    template: `BUG_REPORT.md`,
+    assignee: `eventyret`,
+    body: `## 🐛  Bug Report
 
 ## 🤷‍♀️ What did you do
 
@@ -40,8 +40,8 @@ A clear and concise description of what you expected to happen (or code).
 ## 📺 Additional context/Screenshots
 <!-- Add any other context about the problem here. If applicable, add screenshots to help explain. -->
 `
-	});
-	await open(url);
+  });
+  await open(url);
 };
 
 module.exports = generateError;

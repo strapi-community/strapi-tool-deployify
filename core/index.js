@@ -4,10 +4,10 @@ const questions = require(`./questions`);
 const { generateServer, generateDatabase } = require(`./generateFiles`);
 const { configSetup } = require(`./configSetup`);
 module.exports = {
-	copyHerokuFiles,
-	generateDatabase,
-	installDependecies,
-	questions,
-	generateServer,
-	configSetup
+  copyHerokuFiles,
+  generateDatabase,
+  installDependecies,
+  questions,
+  generateServer,
+  configSetup
 };

@@ -6,10 +6,10 @@ const spinner = ora({ text: `` });
 const chalk = require(`chalk`);
 
 module.exports = {
-	spinner,
-	replace,
-	chalk,
-	access,
-	constants,
-	copyFile
+  spinner,
+  replace,
+  chalk,
+  access,
+  constants,
+  copyFile
 };
