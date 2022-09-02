@@ -8,26 +8,34 @@ const liquidEngine = new Liquid({
   extname: `.liquid`
 });
 
-const renderConfig = async () => {
+const renderSetup = async () => {
   try {
     const template = liquidEngine.renderFileSync(`render`, {
       name: config.projectName,
       env: config.env,
-      nodeVersion: +process.version.match(/^v(\d+\.\d+)/)[1]
+      nodeVersion: +process.version.match(/^v(\d+\.\d+)/)[1],
+      region: config.region,
+      docker: config.useDocker
     });
     const file = fs.createWriteStream(`${config.outDir}/render.yaml`);
     file.write(template);
     file.end();
 
     await spinner.stopAndPersist({
-      symbol: `🚀`,
-      text: ` Added ${chalk.bold.green(
+      symbol: `⚙️`,
+      text: ` Added and configured ${chalk.bold.green(
         config.provider.toUpperCase()
-      )} configuration file to project \n`
+      )} to project \n`
+    });
+    await spinner.stopAndPersist({
+      symbol: `🚀`,
+      text: ` Project is now ready, just push to your version control provider.
+🚀  visit https://dashboard.render.com/select-repo?type=blueprint
+🚀  where you can connect your repo and deploy your app \n`
     });
   } catch (error) {
     console.log(error);
   }
 };
 
-module.exports = { renderConfig };
+module.exports = { renderSetup };

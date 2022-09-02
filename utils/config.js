@@ -17,7 +17,7 @@ const _config = {
   projectType: `js`,
   apiToken: ``,
   projectName: ``,
-  herokuRegion: `eu`,
+  region: `eu`,
   files: [`server`, `database`],
   strapiSecrets: {
     appKeys: crypto.randomBytes(64).toString(`hex`),

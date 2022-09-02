@@ -1,14 +1,6 @@
 #!/usr/bin/env node
-
-/**
- * strapi-tool-strapi-tool-deployify
- * Add docker support for a Strapi Project
- *
- * @author Simen Daehlin <https://dehlin.dev>
- */
-
-const { cli, init, log, message, resetHeroku, resetFiles } = require(`./cli`);
-const questions = require(`./core/questions`);
+const { cli, init, log, resetHeroku, resetFiles } = require(`./cli`);
+const { genericQuestions } = require(`./core/`);
 
 const {
   detectPackageManager,
@@ -19,12 +11,10 @@ const {
 } = require(`./utils`);
 const { useTool } = require(`./providers/heroku`);
 const { selectProvider } = require(`./providers/selectProvider`);
-const { installDependecies, configSetup } = require(`./core`);
 
 const input = cli.input;
 const flags = cli.flags;
 const { clear, debug } = flags;
-const { liquidEngine } = require(`./providers/render/render`);
 (async () => {
   init({ clear });
   input.includes(`help`) && cli.showHelp(0);
@@ -39,13 +29,9 @@ const { liquidEngine } = require(`./providers/render/render`);
     await detectDownloadsAndStars();
     await detectPackageManager();
     await detectProjectType();
-
-    await message(`This tool will only create NEW project on heroku`);
-    await questions();
-    config.useDocker && (await useTool());
-    await configSetup();
-    await installDependecies();
+    await genericQuestions();
     await selectProvider();
+    config.useDocker && (await useTool());
 
     await goodbye();
   } catch (error) {

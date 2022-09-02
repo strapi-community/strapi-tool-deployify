@@ -4,6 +4,7 @@ const {
   chalk,
   copyFile,
   generateError,
+  constants,
   config
 } = require(`../utils`);
 const path = require(`path`);
@@ -14,12 +15,6 @@ const configSetup = async () => {
   for await (const file of config.files) {
     await checkForExistingFolder(file);
     await _configSetup(file);
-    spinner.stopAndPersist({
-      symbol: `⚙️`,
-      text: `  Added configuration to ${chalk.bold.green(
-        `${file}.${config.projectType}`
-      )} \n`
-    });
   }
 };
 
@@ -39,7 +34,14 @@ const _configSetup = async type => {
         folderPath,
         type === `server` ? await generateServer() : await generateDatabase()
       )
+
       .toString();
+    spinner.stopAndPersist({
+      symbol: `⚙️`,
+      text: `  Configured ${chalk.bold.green(
+        `config/env/${config.env}/${type}.${config.projectType}`
+      )} \n`
+    });
   } catch (error) {
     await generateError(error);
   }
@@ -49,7 +51,6 @@ const checkForExistingFolder = async type => {
   const backupFileName = `${type}.backup${Math.floor(
     1000 + Math.random() * 9000
   )}`;
-  if (!path) return;
   const oldPath = path.join(
     process.cwd(),
     `config`,
@@ -57,9 +58,7 @@ const checkForExistingFolder = async type => {
     config.env,
     `${type}.${config.projectType}`
   );
-  spinner.start(
-    `Checking for existing config/env/${type}/${type}.${config.projectType}`
-  );
+
   const backupPath = path.join(
     process.cwd(),
     `config`,
@@ -67,15 +66,19 @@ const checkForExistingFolder = async type => {
     config.env,
     backupFileName
   );
-  spinner.stopAndPersist({
-    symbol: `🕵️‍♀️`,
-    text: ` Detected ${chalk.yellow(
-      `config/env/${type}/${type}.${config.projectType}`
-    )}, backing up to ${chalk.yellow(backupFileName)} \n`
-  });
+
   try {
-    await access(oldPath);
+    spinner.start(
+      `Checking for existing config/env/${config.env}/${type}.${config.projectType}`
+    );
+    await access(oldPath, constants.F_OK);
     await copyFile(oldPath, backupPath);
+    spinner.stopAndPersist({
+      symbol: `🕵️‍♀️`,
+      text: ` Detected ${chalk.yellow(
+        `config/env/${config.env}/${type}.${config.projectType}`
+      )}, backing up to ${chalk.yellow(backupFileName)} \n`
+    });
   } catch (error) {
     await fse
       .outputFile(
@@ -83,6 +86,12 @@ const checkForExistingFolder = async type => {
         type === `server` ? await generateServer() : await generateDatabase()
       )
       .toString();
+    spinner.stopAndPersist({
+      symbol: `🕵️‍♀️`,
+      text: ` Did not detect ${chalk.yellow(
+        `config/env/${config.env}/${type}.${config.projectType}`
+      )} \n`
+    });
   }
 };
 

@@ -1,8 +1,8 @@
 build:
   docker:
-    web: Dockerfile.prod
+    web: {{dockerFile}}
   config:
-    NODE_ENV: production
+    NODE_ENV: {{env}}
     DATABASE_URL: $DATABASE_URL
     WEBSITE_URL: $WEBSITE_URL
     PORT: $PORT

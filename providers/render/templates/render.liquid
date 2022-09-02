@@ -1,8 +1,17 @@
 services:
   - type: web
     name: {{ name }}
+{% if docker  %}
+    env: docker
+    {% if env == 'production' %}
+    dockerfilePath: ./Dockerfile.prod
+    {% else %}
+    dockerfilePath: ./Dockerfile{% endif %}
+    {% else %}
     env: node
-    plan: starter
+{% endif %}
+    plan: starter,
+    region: {{ region }}
     buildCommand: yarn install && yarn build
     startCommand: yarn start
     healthCheckPath: /_health

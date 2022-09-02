@@ -1,5 +1,6 @@
 const { config, spinner, chalk } = require(`../../utils`);
 const shell = require(`shelljs`);
+
 const _createEnv = async () => {
   shell.exec(
     `HEROKU_API_KEY="${config.apiToken}" heroku config:set WEBSITE_URL=$(heroku info -s | grep web_url | cut -d= -f2) APP_KEYS=${config.strapiSecrets.appKeys} API_TOKEN_SALT=${config.strapiSecrets.apiTokenSalt} ADMIN_JWT_SECRET=${config.strapiSecrets.adminJwtSecret} JWT_SECRET=${config.strapiSecrets.jwtSecret} NODE_ENV=${config.env}  --app ${config.projectName}`,
@@ -20,7 +21,7 @@ const _createApp = async () => {
     )} app ${_herokuWithRegion()}`
   });
   shell.exec(
-    `HEROKU_API_KEY="${config.apiToken}" heroku create ${config.projectName} --region ${config.herokuRegion}`
+    `HEROKU_API_KEY="${config.apiToken}" heroku create ${config.projectName} --region ${config.region}`
   );
 };
 
@@ -75,7 +76,7 @@ const destroyHerokuApp = async () => {
 
 const _herokuWithRegion = () => {
   return `on ${chalk.magenta.bold(`Heroku`)} (${chalk.blue.bold(
-    config.herokuRegion.toUpperCase()
+    config.region.toUpperCase()
   )}) \n`;
 };
 

@@ -1,7 +1,5 @@
-const { renderConfig } = require(`./render/render`);
-const { helpMessages } = require(`./render/messages`);
+const { renderSetup } = require(`./render`);
 
 module.exports = {
-  renderConfig,
-  helpMessages
+  renderSetup
 };

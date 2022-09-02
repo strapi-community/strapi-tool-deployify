@@ -1,7 +1,7 @@
 const prompts = require(`prompts`);
 
 const { setConfig, config } = require(`../utils`);
-module.exports = async () => {
+const genericQuestions = async () => {
   const questions = await prompts([
     {
       type: `select`,
@@ -63,21 +63,6 @@ module.exports = async () => {
       ]
     },
     {
-      type: `select`,
-      name: `herokuRegion`,
-      message: `What region do you want to deploy to? 🌍`,
-      choices: [
-        {
-          title: `US`,
-          value: `us`
-        },
-        {
-          title: `EU`,
-          value: `eu`
-        }
-      ]
-    },
-    {
       name: `useDocker`,
       type: `confirm`,
       message: `Are you using Docker for deployment? 🐳`,
@@ -90,7 +75,6 @@ module.exports = async () => {
       initial: false
     }
   ]);
-  console.log(`\n`);
   setConfig({
     ...config,
     ...questions,
@@ -98,3 +82,65 @@ module.exports = async () => {
     env: questions.env
   });
 };
+
+const herokuQuestions = async () => {
+  const questions = await prompts([
+    {
+      type: `select`,
+      name: `region`,
+      message: `What region do you want to deploy to? 🌍`,
+      choices: [
+        {
+          title: `US`,
+          value: `us`
+        },
+        {
+          title: `EU`,
+          value: `eu`
+        }
+      ]
+    }
+  ]);
+  setConfig({
+    ...config,
+    ...questions
+  });
+};
+
+const renderQuestions = async () => {
+  const questions = await prompts([
+    {
+      type: `select`,
+      name: `region`,
+      message: `What region do you want to deploy to? 🌍`,
+      choices: [
+        {
+          title: `Oregon`,
+          value: `oregon`,
+          description: `US`
+        },
+        {
+          title: `Ohio`,
+          value: `ohio`,
+          description: `US`
+        },
+        {
+          title: `Frankfurt`,
+          value: `frankfurt`,
+          description: `EU`
+        },
+        {
+          title: `Singapore`,
+          value: `singapore`,
+          description: `Asia`
+        }
+      ]
+    }
+  ]);
+  setConfig({
+    ...config,
+    ...questions
+  });
+};
+
+module.exports = { genericQuestions, herokuQuestions, renderQuestions };
