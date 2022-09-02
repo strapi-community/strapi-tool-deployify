@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const { cli, init, log, resetHeroku, resetFiles } = require(`./cli`);
+const { cli, init, log, resetProvider } = require(`./cli`);
 const { genericQuestions } = require(`./core/`);
 
 const {
@@ -19,8 +19,8 @@ const { clear, debug } = flags;
   init({ clear });
   input.includes(`help`) && cli.showHelp(0);
   if (input.includes(`reset`)) {
-    await resetHeroku();
-    await resetFiles();
+    await resetProvider();
+
     await goodbye();
     return;
   }
