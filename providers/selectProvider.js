@@ -1,5 +1,5 @@
 const { config } = require(`../utils`);
-const { detectHerokuCLI, herokuSetup } = require(`./providers/heroku`);
+const { detectHerokuCLI, herokuSetup } = require(`./heroku`);
 const selectProvider = async () => {
   const { provider } = config;
   switch (provider) {
