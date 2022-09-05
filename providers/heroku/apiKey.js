@@ -1,9 +1,10 @@
 const os = require(`os`);
 const shell = require(`shelljs`);
-const { setConfig } = require(`../../utils/config`);
+const { setConfig, config } = require(`../../utils/config`);
 const { spinner } = require(`../../utils/config`);
 
 const getApiKey = async () => {
+  const providerConfig = config.providers[config.provider];
   try {
     const slash = os.platform() === `win32` ? `\\` : `/`;
 

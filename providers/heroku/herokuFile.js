@@ -23,7 +23,7 @@ const createHerokuFile = async herokuConfig => {
 
     await spinner.stopAndPersist({
       symbol: `⚙️`,
-      text: ` Added and configured ${chalk.bold.green(
+      text: `  Added and configured ${chalk.bold.green(
         config.provider.toUpperCase()
       )} to project \n`
     });

@@ -11,7 +11,7 @@ const _createEnv = async herokuConfig => {
   );
   spinner.stopAndPersist({
     symbol: `⚙️`,
-    text: ` Configuring ${chalk.magenta.bold(
+    text: `  Configuring ${chalk.magenta.bold(
       `${config.projectName.toUpperCase()}'s`
     )} enviroment variables ${_herokuWithRegion()}`
   });
