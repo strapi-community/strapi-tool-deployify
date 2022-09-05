@@ -2,7 +2,7 @@ const { config, spinner, chalk, detectHerokuCLI } = require(`../../utils`);
 const shell = require(`shelljs`);
 const { createHerokuFile } = require(`./herokuFile`);
 const { herokuQuestions } = require(`../../core`);
-const message = require(`../../cli/message`);
+const { outputs } = require(`../../cli`);
 
 const _createEnv = async herokuConfig => {
   shell.exec(
@@ -86,7 +86,7 @@ const _herokuWithRegion = () => {
 module.exports = {
   herokuHooks: {
     async prebuild() {
-      await message(`This tool will only create NEW project on heroku`);
+      await outputs.info(`This tool will only create NEW project on heroku`);
       await detectHerokuCLI();
       await herokuQuestions(`deploy to`);
     },

@@ -1,8 +1,8 @@
-const { spinner, chalk } = require(`./utils`);
-const { config } = require(`./config`);
-const { pkg } = require(`../cli/cli`);
+const { spinner, chalk } = require(`../../utils`);
+const { config } = require(`../../config`);
+const { pkg } = require(`../../package.json`);
 
-const goodbye = async (quit = false) => {
+const goodbyeOutput = async ({ quit = false }) => {
   if (quit) {
     spinner.stopAndPersist({
       symbol: `☝️`,
@@ -26,4 +26,4 @@ const goodbye = async (quit = false) => {
   console.log(`👉  ${pkg.url} 👈 \n`);
 };
 
-module.exports = goodbye;
+module.exports = goodbyeOutput;

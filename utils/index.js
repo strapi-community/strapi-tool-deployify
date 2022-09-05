@@ -1,5 +1,4 @@
 const generateError = require(`./bugreport`);
-const goodbye = require(`./goodbye`);
 const { setConfig, config } = require(`./config`);
 const {
   spinner,
@@ -24,7 +23,6 @@ module.exports = {
   constants,
   copyFile,
   generateError,
-  goodbye,
   detectPackageManager,
   detectProjectType,
   setConfig,
