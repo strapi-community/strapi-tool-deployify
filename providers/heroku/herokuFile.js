@@ -15,7 +15,9 @@ const createHerokuFile = async herokuConfig => {
         config.env === `production` ? `Dockerfile.prod` : `Dockerfile`,
       env: config.env
     });
-    const file = fs.createWriteStream(`${config.outDir}/heroku.yml`);
+    const file = fs.createWriteStream(
+      `${config.outDir}/${herokuConfig.outputFileName}`
+    );
     file.write(template);
     file.end();
 

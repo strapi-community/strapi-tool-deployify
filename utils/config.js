@@ -16,7 +16,6 @@ const _config = {
   herokuCLI: false,
   packageManager: `yarn`,
   projectType: `js`,
-  apiToken: ``,
   projectName: ``,
   region: `eu`,
   files: [`server`, `database`],
@@ -27,6 +26,14 @@ const _config = {
     jwtSecret: crypto.randomBytes(32).toString(`hex`)
   },
   hooks: createHooks(),
+  providers: {
+    heroku: {
+      apiToken: ``,
+      outputFileName: `heroku.yaml`
+    },
+    render: {
+      outputFileName: `render.yml`
+    }
   }
 };
 const setConfig = newConfig => Object.assign(_config, newConfig);

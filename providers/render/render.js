@@ -17,7 +17,9 @@ const renderSetup = async renderConfig => {
       region: config.region,
       docker: config.useDocker
     });
-    const file = fs.createWriteStream(`${config.outDir}/render.yaml`);
+    const file = fs.createWriteStream(
+      `${config.outDir}/${renderConfig.outputFileName}`
+    );
     file.write(template);
     file.end();
 

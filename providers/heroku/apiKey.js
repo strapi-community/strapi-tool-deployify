@@ -11,7 +11,7 @@ const getApiKey = async () => {
         `[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}`
       )
       .substring(11, 47);
-    setConfig({ apiToken });
+    setConfig({ providers: { heroku: { apiToken } } });
   } catch (error) {
     spinner.stopAndPersist({
       symbol: `❌`,
