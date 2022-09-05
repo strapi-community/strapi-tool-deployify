@@ -4,12 +4,13 @@ const {
   constants,
   spinner,
   chalk,
-  setConfig,
-  config
+  config,
+  setConfig
 } = require(`../utils`);
 const { destroyHerokuApp } = require(`../providers/heroku`);
+const { herokuQuestions } = require(`../core`);
+const { getProviders } = require(`../core/questions`);
 const prompts = require(`prompts`);
-
 const FILES_TO_REMOVE = [
   {
     directory: `${process.cwd()}`,
@@ -92,50 +93,27 @@ const _resetProvider = async () => {
         name: `provider`,
         message: `What provider do you want to reset?`,
         warn: `Not enabled yet`,
-        choices: [
-          {
-            title: `Heroku`,
-            value: `heroku`,
-            description: `Heroku Platform`
-          },
-          {
-            title: `Render`,
-            value: `render`,
-            description: `Render`
-          },
-          {
-            title: `AWS`,
-            value: `aws`,
-            description: `Amazon Web Services`,
-            disabled: true
-          },
-          {
-            title: `Digital Ocean`,
-            value: `digitalocean`,
-            description: `Digital Ocean App Platform`,
-            disabled: true
-          },
-          {
-            title: `Google`,
-            value: `Google`,
-            description: `Google Cloud Platform`,
-            disabled: true
-          }
-        ]
-      },
-      {
-        type: prev => (prev === `heroku` ? `text` : null),
-        name: `projectName`,
-        message: `Project Name`,
-        validate: value => (value ? true : `Project name is required`)
+        choices: getProviders()
       }
     ])
   );
+
   const { provider } = config;
+
   switch (provider) {
     case `heroku`:
-      await _resetFiles();
+      setConfig(
+        await prompts([
+          {
+            type: `text`,
+            name: `projectName`,
+            message: `Project Name`,
+            validate: value => (value ? true : `Project name is required`)
+          }
+        ])
+      );
       await destroyHerokuApp(config.providers.heroku);
+      await _resetFiles();
       break;
     case `render`:
       await _resetFiles();

@@ -17,7 +17,7 @@ const _config = {
   packageManager: `yarn`,
   projectType: `js`,
   projectName: ``,
-  region: `eu`,
+  region: `global`,
   files: [`server`, `database`],
 
   strapiSecrets: {

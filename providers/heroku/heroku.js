@@ -88,7 +88,7 @@ module.exports = {
     async prebuild() {
       await message(`This tool will only create NEW project on heroku`);
       await detectHerokuCLI();
-      await herokuQuestions();
+      await herokuQuestions(`deploy to`);
     },
     async build(herokuConfig) {
       await createHerokuFile(herokuConfig);

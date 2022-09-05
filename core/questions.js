@@ -9,7 +9,7 @@ const genericQuestions = async () => {
       name: `provider`,
       message: `What provider do you want to use?`,
       warn: `Not enabled yet`,
-      choices: _getProviders()
+      choices: getProviders()
     },
     {
       type: `text`,
@@ -55,12 +55,12 @@ const genericQuestions = async () => {
   });
 };
 
-const herokuQuestions = async () => {
+const herokuQuestions = async action => {
   const questions = await prompts([
     {
       type: `select`,
       name: `region`,
-      message: `What region do you want to deploy to? 🌍`,
+      message: `What region do you want to ${action}? 🌍`,
       choices: _getRegions()
     }
   ]);
@@ -85,7 +85,7 @@ const renderQuestions = async () => {
   });
 };
 
-const _getProviders = () => {
+const getProviders = () => {
   let providerChoices = [];
   for (const providerKey in config.providers) {
     const provider = config.providers[providerKey];
@@ -102,8 +102,12 @@ const _getProviders = () => {
 
 const _getRegions = () => {
   const providerConfig = config.providers[config.provider];
-  console.log(providerConfig);
   return providerConfig.regions;
 };
 
-module.exports = { genericQuestions, herokuQuestions, renderQuestions };
+module.exports = {
+  genericQuestions,
+  herokuQuestions,
+  renderQuestions,
+  getProviders
+};

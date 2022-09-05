@@ -3,7 +3,8 @@ const installDependecies = require(`./dependencies`);
 const {
   genericQuestions,
   herokuQuestions,
-  renderQuestions
+  renderQuestions,
+  getProviders
 } = require(`./questions`);
 const { generateServer, generateDatabase } = require(`./generateFiles`);
 const { configSetup } = require(`./configSetup`);
@@ -17,5 +18,6 @@ module.exports = {
   renderQuestions,
   generateServer,
   configSetup,
-  useTool
+  useTool,
+  getProviders
 };
