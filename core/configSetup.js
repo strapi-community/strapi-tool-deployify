@@ -1,3 +1,5 @@
+const path = require(`path`);
+const fse = require(`fs-extra`);
 const {
   spinner,
   access,
@@ -7,8 +9,6 @@ const {
   constants,
   config
 } = require(`../utils`);
-const path = require(`path`);
-const fse = require(`fs-extra`);
 const { generateDatabase, generateServer } = require(`./generateFiles`);
 
 const configSetup = async () => {

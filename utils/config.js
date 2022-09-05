@@ -19,6 +19,7 @@ const _config = {
   projectName: ``,
   region: `eu`,
   files: [`server`, `database`],
+
   strapiSecrets: {
     appKeys: crypto.randomBytes(64).toString(`hex`),
     apiTokenSalt: crypto.randomBytes(32).toString(`hex`),
@@ -28,11 +29,62 @@ const _config = {
   hooks: createHooks(),
   providers: {
     heroku: {
+      name: `Heroku`,
+      description: `Heroku Platform`,
+      enabled: true,
       apiToken: ``,
-      outputFileName: `heroku.yml`
+      outputFileName: `heroku.yml`,
+      regions: [
+        {
+          title: `US`,
+          value: `us`
+        },
+        {
+          title: `EU`,
+          value: `eu`
+        }
+      ]
     },
     render: {
-      outputFileName: `render.yaml`
+      name: `Render`,
+      description: `Render Platform`,
+      outputFileName: `render.yaml`,
+      enabled: true,
+      regions: [
+        {
+          title: `Oregon`,
+          value: `oregon`,
+          description: `US`
+        },
+        {
+          title: `Ohio`,
+          value: `ohio`,
+          description: `US`
+        },
+        {
+          title: `Frankfurt`,
+          value: `frankfurt`,
+          description: `EU`
+        },
+        {
+          title: `Singapore`,
+          value: `singapore`,
+          description: `Asia`
+        }
+      ]
+    },
+    aws: {
+      name: `AWS`,
+      description: `Amazon Web Services`,
+      enabled: true
+    },
+    digitalocean: {
+      name: `Digital Ocean`,
+      description: `Digital Ocean App Platform`
+    },
+    google: {
+      name: `Google`,
+      description: `Google Cloud Platform`
     }
   }
 };

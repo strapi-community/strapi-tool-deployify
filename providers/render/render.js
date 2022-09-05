@@ -2,6 +2,7 @@ const { resolve } = require(`path`);
 const { Liquid } = require(`liquidjs`);
 const { config, spinner, chalk } = require(`../../utils`);
 const fs = require(`fs-extra`);
+const { renderQuestions } = require(`../../core`);
 
 const liquidEngine = new Liquid({
   root: resolve(__dirname, `templates`),
@@ -42,8 +43,11 @@ const renderSetup = async renderConfig => {
 
 module.exports = {
   renderHooks: {
-    build(renderConfig) {
-      renderSetup(renderConfig);
+    async prebuild() {
+      await renderQuestions();
+    },
+    async build(renderConfig) {
+      await renderSetup(renderConfig);
     }
   }
 };

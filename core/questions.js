@@ -1,6 +1,7 @@
 const prompts = require(`prompts`);
 
 const { setConfig, config } = require(`../utils`);
+
 const genericQuestions = async () => {
   const questions = await prompts([
     {
@@ -8,36 +9,7 @@ const genericQuestions = async () => {
       name: `provider`,
       message: `What provider do you want to use?`,
       warn: `Not enabled yet`,
-      choices: [
-        {
-          title: `Heroku`,
-          value: `heroku`,
-          description: `Heroku Platform`
-        },
-        {
-          title: `Render`,
-          value: `render`,
-          description: `Render`
-        },
-        {
-          title: `AWS`,
-          value: `aws`,
-          description: `Amazon Web Services`,
-          disabled: true
-        },
-        {
-          title: `Digital Ocean`,
-          value: `digitalocean`,
-          description: `Digital Ocean App Platform`,
-          disabled: true
-        },
-        {
-          title: `Google`,
-          value: `Google`,
-          description: `Google Cloud Platform`,
-          disabled: true
-        }
-      ]
+      choices: _getProviders()
     },
     {
       type: `text`,
@@ -89,16 +61,7 @@ const herokuQuestions = async () => {
       type: `select`,
       name: `region`,
       message: `What region do you want to deploy to? 🌍`,
-      choices: [
-        {
-          title: `US`,
-          value: `us`
-        },
-        {
-          title: `EU`,
-          value: `eu`
-        }
-      ]
+      choices: _getRegions()
     }
   ]);
   setConfig({
@@ -113,34 +76,34 @@ const renderQuestions = async () => {
       type: `select`,
       name: `region`,
       message: `What region do you want to deploy to? 🌍`,
-      choices: [
-        {
-          title: `Oregon`,
-          value: `oregon`,
-          description: `US`
-        },
-        {
-          title: `Ohio`,
-          value: `ohio`,
-          description: `US`
-        },
-        {
-          title: `Frankfurt`,
-          value: `frankfurt`,
-          description: `EU`
-        },
-        {
-          title: `Singapore`,
-          value: `singapore`,
-          description: `Asia`
-        }
-      ]
+      choices: _getRegions()
     }
   ]);
   setConfig({
     ...config,
     ...questions
   });
+};
+
+const _getProviders = () => {
+  let providerChoices = [];
+  for (const providerKey in config.providers) {
+    const provider = config.providers[providerKey];
+
+    providerChoices.push({
+      title: provider.name,
+      value: providerKey,
+      description: provider.description,
+      disabled: !provider.enabled
+    });
+  }
+  return providerChoices;
+};
+
+const _getRegions = () => {
+  const providerConfig = config.providers[config.provider];
+  console.log(providerConfig);
+  return providerConfig.regions;
 };
 
 module.exports = { genericQuestions, herokuQuestions, renderQuestions };
