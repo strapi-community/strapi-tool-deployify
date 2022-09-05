@@ -6,7 +6,7 @@ const message = require(`../../cli/message`);
 
 const _createEnv = async herokuConfig => {
   shell.exec(
-    `HEROKU_API_KEY="${herokuConfig.apiToken}" heroku config:set WEBSITE_URL=$(heroku info -s | grep web_url | cut -d= -f2) APP_KEYS=${config.strapiSecrets.appKeys} API_TOKEN_SALT=${config.strapiSecrets.herokuConfig.apiTokenSalt} ADMIN_JWT_SECRET=${config.strapiSecrets.adminJwtSecret} JWT_SECRET=${config.strapiSecrets.jwtSecret} NODE_ENV=${config.env}  --app ${config.projectName}`,
+    `HEROKU_API_KEY="${herokuConfig.apiToken}" heroku config:set WEBSITE_URL=$(heroku info -s | grep web_url | cut -d= -f2) APP_KEYS=${config.strapiSecrets.appKeys} API_TOKEN_SALT=${config.strapiSecrets.apiTokenSalt} ADMIN_JWT_SECRET=${config.strapiSecrets.adminJwtSecret} JWT_SECRET=${config.strapiSecrets.jwtSecret} NODE_ENV=${config.env}  --app ${config.projectName}`,
     { silent: true }
   );
   spinner.stopAndPersist({
