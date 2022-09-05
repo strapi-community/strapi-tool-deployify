@@ -1,5 +1,6 @@
 const path = require(`path`);
 const crypto = require(`crypto`);
+const { createHooks } = require(`hookable`);
 
 const _config = {
   url: `https://github.com/strapi-community/strapi-tool-deployify`,
@@ -15,7 +16,6 @@ const _config = {
   herokuCLI: false,
   packageManager: `yarn`,
   projectType: `js`,
-  apiToken: ``,
   projectName: ``,
   region: `eu`,
   files: [`server`, `database`],
@@ -24,6 +24,16 @@ const _config = {
     apiTokenSalt: crypto.randomBytes(32).toString(`hex`),
     adminJwtSecret: crypto.randomBytes(32).toString(`hex`),
     jwtSecret: crypto.randomBytes(32).toString(`hex`)
+  },
+  hooks: createHooks(),
+  providers: {
+    heroku: {
+      apiToken: ``,
+      outputFileName: `heroku.yml`
+    },
+    render: {
+      outputFileName: `render.yaml`
+    }
   }
 };
 const setConfig = newConfig => Object.assign(_config, newConfig);

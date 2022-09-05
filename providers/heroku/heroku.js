@@ -1,9 +1,12 @@
-const { config, spinner, chalk } = require(`../../utils`);
+const { config, spinner, chalk, detectHerokuCLI } = require(`../../utils`);
 const shell = require(`shelljs`);
+const { createHerokuFile } = require(`./herokuFile`);
+const { herokuQuestions } = require(`../../core`);
+const message = require(`../../cli/message`);
 
-const _createEnv = async () => {
+const _createEnv = async herokuConfig => {
   shell.exec(
-    `HEROKU_API_KEY="${config.apiToken}" heroku config:set WEBSITE_URL=$(heroku info -s | grep web_url | cut -d= -f2) APP_KEYS=${config.strapiSecrets.appKeys} API_TOKEN_SALT=${config.strapiSecrets.apiTokenSalt} ADMIN_JWT_SECRET=${config.strapiSecrets.adminJwtSecret} JWT_SECRET=${config.strapiSecrets.jwtSecret} NODE_ENV=${config.env}  --app ${config.projectName}`,
+    `HEROKU_API_KEY="${herokuConfig.apiToken}" heroku config:set WEBSITE_URL=$(heroku info -s | grep web_url | cut -d= -f2) APP_KEYS=${config.strapiSecrets.appKeys} API_TOKEN_SALT=${config.strapiSecrets.herokuConfig.apiTokenSalt} ADMIN_JWT_SECRET=${config.strapiSecrets.adminJwtSecret} JWT_SECRET=${config.strapiSecrets.jwtSecret} NODE_ENV=${config.env}  --app ${config.projectName}`,
     { silent: true }
   );
   spinner.stopAndPersist({
@@ -13,7 +16,7 @@ const _createEnv = async () => {
     )} enviroment variables ${_herokuWithRegion()}`
   });
 };
-const _createApp = async () => {
+const _createApp = async herokuConfig => {
   spinner.stopAndPersist({
     symbol: `🌍`,
     text: ` Spinning up ${chalk.magenta.bold(
@@ -21,13 +24,13 @@ const _createApp = async () => {
     )} app ${_herokuWithRegion()}`
   });
   shell.exec(
-    `HEROKU_API_KEY="${config.apiToken}" heroku create ${config.projectName} --region ${config.region}`
+    `HEROKU_API_KEY="${herokuConfig.apiToken}" heroku create ${config.projectName} --region ${config.region}`
   );
 };
 
-const _createDatabase = async () => {
+const _createDatabase = async herokuConfig => {
   shell.exec(
-    `HEROKU_API_KEY="${config.apiToken}" heroku addons:create heroku-postgresql:hobby-dev --app ${config.projectName}`,
+    `HEROKU_API_KEY="${herokuConfig.apiToken}" heroku addons:create heroku-postgresql:hobby-dev --app ${config.projectName}`,
     { silent: true }
   );
   spinner.stopAndPersist({
@@ -41,9 +44,9 @@ const _createDatabase = async () => {
     )} project ${_herokuWithRegion()}`
   });
 };
-const _useContainer = async () => {
+const _useContainer = async herokuConfig => {
   shell.exec(
-    `HEROKU_API_KEY="${config.apiToken}" stack:set container  --app ${config.projectName}`,
+    `HEROKU_API_KEY="${herokuConfig.apiToken}" stack:set container  --app ${config.projectName}`,
     { silent: true }
   );
   spinner.stopAndPersist({
@@ -54,7 +57,7 @@ const _useContainer = async () => {
   });
 };
 
-const destroyHerokuApp = async () => {
+const destroyHerokuApp = async herokuConfig => {
   spinner.stopAndPersist({
     symbol: `💀`,
     text: `Tearing down ${chalk.magenta.bold(
@@ -62,7 +65,7 @@ const destroyHerokuApp = async () => {
     )} ${_herokuWithRegion()}`
   });
   shell.exec(
-    `HEROKU_API_KEY="${config.apiToken}" heroku apps:destroy ${config.projectName} --confirm ${config.projectName}`
+    `HEROKU_API_KEY="${herokuConfig.apiToken}" heroku apps:destroy ${config.projectName} --confirm ${config.projectName}`
   );
   spinner.stopAndPersist({
     symbol: `🤠`,
@@ -70,7 +73,7 @@ const destroyHerokuApp = async () => {
       `heroku`
     )} here are the apps that are left on your heroku account 👇 \n`
   });
-  shell.exec(`HEROKU_API_KEY="${config.apiToken}" heroku apps`, {});
+  shell.exec(`HEROKU_API_KEY="${herokuConfig.apiToken}" heroku apps`, {});
   console.log(`\n`);
 };
 
@@ -80,14 +83,22 @@ const _herokuWithRegion = () => {
   )}) \n`;
 };
 
-const herokuSetup = async () => {
-  _createApp();
-  config.useDocker && _useContainer();
-  _createEnv();
-  _createDatabase();
-};
-
 module.exports = {
-  herokuSetup,
+  herokuHooks: {
+    async prebuild() {
+      await message(`This tool will only create NEW project on heroku`);
+      await detectHerokuCLI();
+      await herokuQuestions();
+    },
+    async build(herokuConfig) {
+      await createHerokuFile(herokuConfig);
+    },
+    postbuild(herokuConfig) {
+      _createApp(herokuConfig);
+      config.useDocker && _useContainer(herokuConfig);
+      _createEnv(herokuConfig);
+      _createDatabase(herokuConfig);
+    }
+  },
   destroyHerokuApp
 };

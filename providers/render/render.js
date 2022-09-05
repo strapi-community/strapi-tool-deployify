@@ -8,7 +8,7 @@ const liquidEngine = new Liquid({
   extname: `.liquid`
 });
 
-const renderSetup = async () => {
+const renderSetup = async renderConfig => {
   try {
     const template = liquidEngine.renderFileSync(`render`, {
       name: config.projectName,
@@ -17,7 +17,9 @@ const renderSetup = async () => {
       region: config.region,
       docker: config.useDocker
     });
-    const file = fs.createWriteStream(`${config.outDir}/render.yaml`);
+    const file = fs.createWriteStream(
+      `${config.outDir}/${renderConfig.outputFileName}`
+    );
     file.write(template);
     file.end();
 
@@ -38,4 +40,10 @@ const renderSetup = async () => {
   }
 };
 
-module.exports = { renderSetup };
+module.exports = {
+  renderHooks: {
+    build(renderConfig) {
+      renderSetup(renderConfig);
+    }
+  }
+};

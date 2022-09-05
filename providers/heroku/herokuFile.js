@@ -8,14 +8,16 @@ const liquidEngine = new Liquid({
   extname: `.liquid`
 });
 
-const createHerokuFile = async () => {
+const createHerokuFile = async herokuConfig => {
   try {
     const template = liquidEngine.renderFileSync(`heroku`, {
       dockerFile:
         config.env === `production` ? `Dockerfile.prod` : `Dockerfile`,
       env: config.env
     });
-    const file = fs.createWriteStream(`${config.outDir}/heroku.yml`);
+    const file = fs.createWriteStream(
+      `${config.outDir}/${herokuConfig.outputFileName}`
+    );
     file.write(template);
     file.end();
 

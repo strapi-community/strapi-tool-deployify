@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 const { cli, init, log, resetProvider } = require(`./cli`);
-const { genericQuestions } = require(`./core/`);
+const {
+  genericQuestions,
+  configSetup,
+  installDependecies
+} = require(`./core/`);
 
 const {
   detectPackageManager,
@@ -10,7 +14,6 @@ const {
   config
 } = require(`./utils`);
 const { useTool } = require(`./providers/heroku`);
-const { selectProvider } = require(`./providers/selectProvider`);
 
 const input = cli.input;
 const flags = cli.flags;
@@ -30,7 +33,21 @@ const { clear, debug } = flags;
     await detectPackageManager();
     await detectProjectType();
     await genericQuestions();
-    await selectProvider();
+
+    const { hooks } = require(`${config.providersDir}/${config.provider}`);
+
+    const providerConfig = config.providers[config.provider];
+
+    // init provider hooks
+    config.hooks.addHooks(hooks);
+
+    // trigger provider setup
+    await configSetup();
+    await installDependecies();
+    await config.hooks.callHook(`prebuild`, providerConfig);
+    await config.hooks.callHook(`build`, providerConfig);
+    await config.hooks.callHook(`postbuild`, providerConfig);
+
     config.useDocker && (await useTool());
 
     await goodbye();
