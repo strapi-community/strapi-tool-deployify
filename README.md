@@ -75,6 +75,10 @@ I/We are actively looking for contributors, maintainers, and others to help shap
 
 If interested please feel free to email the lead maintainer Simen at: simen@dehlin.dev or ping `Cookie Monster#6725` on Discord.
 
+### Contributors
+
+- [Daedalus](https://github.com/ComfortablyCoding)
+
 ## ⭐️ Show your support
 
 Give a star if this project helped you.
