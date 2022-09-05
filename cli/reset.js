@@ -135,7 +135,7 @@ const _resetProvider = async () => {
   switch (provider) {
     case `heroku`:
       await _resetFiles();
-      await destroyHerokuApp();
+      await destroyHerokuApp(config.providers.heroku);
       break;
     case `render`:
       await _resetFiles();
