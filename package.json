@@ -45,8 +45,6 @@
 		"node-fetch": "^2.6.7",
 		"open": "^8.4.0",
 		"ora": "^5.4.1",
-		"pg": "^8.8.0",
-		"pg-connection-string": "^2.5.0",
 		"prompts": "^2.4.2",
 		"replace-in-file": "^6.3.5",
 		"shelljs": "^0.8.5"
