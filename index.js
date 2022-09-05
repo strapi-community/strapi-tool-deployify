@@ -42,10 +42,17 @@ const { clear, debug } = flags;
     config.hooks.addHooks(hooks);
 
     // trigger provider setup
+    // provider specific pre build
+    await config.hooks.callHook(`prebuild`, providerConfig);
+
+    // general internal build
     await configSetup();
     await installDependecies();
-    await config.hooks.callHook(`prebuild`, providerConfig);
+
+    // provider specific build
     await config.hooks.callHook(`build`, providerConfig);
+
+    // provider specific post build
     await config.hooks.callHook(`postbuild`, providerConfig);
 
     config.useDocker && (await useTool());
