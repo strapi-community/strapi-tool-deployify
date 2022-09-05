@@ -8,7 +8,7 @@ const liquidEngine = new Liquid({
   extname: `.liquid`
 });
 
-const renderSetup = async () => {
+const renderSetup = async renderConfig => {
   try {
     const template = liquidEngine.renderFileSync(`render`, {
       name: config.projectName,
@@ -38,4 +38,10 @@ const renderSetup = async () => {
   }
 };
 
-module.exports = { renderSetup };
+module.exports = {
+  renderHooks: {
+    build(renderConfig) {
+      renderSetup(renderConfig);
+    }
+  }
+};

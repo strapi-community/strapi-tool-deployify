@@ -8,7 +8,7 @@ const liquidEngine = new Liquid({
   extname: `.liquid`
 });
 
-const createHerokuFile = async () => {
+const createHerokuFile = async herokuConfig => {
   try {
     const template = liquidEngine.renderFileSync(`heroku`, {
       dockerFile:

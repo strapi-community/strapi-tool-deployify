@@ -1,5 +1,5 @@
-const { renderSetup } = require(`./render`);
+const { renderHooks } = require(`./render`);
 
 module.exports = {
-  renderSetup
+  hooks: renderHooks
 };

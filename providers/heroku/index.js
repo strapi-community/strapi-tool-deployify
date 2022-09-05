@@ -1,9 +1,5 @@
-const { herokuSetup, destroyHerokuApp } = require(`./heroku`);
-const getApiKey = require(`./apiKey`);
-const { createHerokuFile } = require(`./herokuFile`);
+const { herokuHooks, destroyHerokuApp } = require(`./heroku`);
 module.exports = {
-  getApiKey,
-  herokuSetup,
-  createHerokuFile,
+  hooks: herokuHooks,
   destroyHerokuApp
 };
