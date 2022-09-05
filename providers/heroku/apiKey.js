@@ -5,8 +5,10 @@ const { spinner } = require(`../../utils/config`);
 
 const getApiKey = async () => {
   try {
+    const slash = os.platform() === `win32` ? `\\` : `/`;
+
     const apiToken = await shell
-      .cat(`${os.homedir()}/.netrc `)
+      .cat(`${os.homedir()}${slash}.netrc `)
       .grep(
         `[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}`
       )
