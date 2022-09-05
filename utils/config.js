@@ -29,10 +29,10 @@ const _config = {
   providers: {
     heroku: {
       apiToken: ``,
-      outputFileName: `heroku.yaml`
+      outputFileName: `heroku.yml`
     },
     render: {
-      outputFileName: `render.yml`
+      outputFileName: `render.yaml`
     }
   }
 };
