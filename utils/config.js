@@ -76,7 +76,7 @@ const _config = {
     aws: {
       name: `AWS`,
       description: `Amazon Web Services`,
-      enabled: true
+      enabled: false
     },
     digitalocean: {
       name: `Digital Ocean`,
