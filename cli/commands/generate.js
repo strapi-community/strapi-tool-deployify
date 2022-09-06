@@ -19,7 +19,7 @@ const getDetectableSettings = async () => {
 
   // project type
   spinner.start(` 💻 Detecting Project type... `);
-  const projectType = detect.projectType();
+  const projectType = await detect.projectType();
   const projectTypeColoredText =
     projectType === `ts`
       ? chalk.bold.blueBright(`TypeScript`)
