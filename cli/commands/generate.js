@@ -72,4 +72,4 @@ const generate = async () => {
   }
 };
 
-module.exports = { invoke: generate };
+module.exports = { name: `generate`, invoke: generate };
