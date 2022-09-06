@@ -1,3 +1,4 @@
+const chalk = require(`chalk`);
 const { buildConfig, loadProviderConfig } = require(`../../config`);
 const {
   configSetup,
@@ -5,7 +6,7 @@ const {
   generateDockerFile
 } = require(`../../core`);
 const { askGenerateQuestions } = require(`../../core/questions`);
-const { detect, spinner, chalk } = require(`../../utils`);
+const { detect, spinner } = require(`../../utils`);
 
 const getDetectableSettings = async () => {
   // package manager

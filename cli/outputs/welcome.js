@@ -1,4 +1,5 @@
-const { chalk, spinner } = require(`../../utils`);
+const chalk = require(`chalk`);
+const { spinner } = require(`../../utils`);
 const pkg = require(`../../package.json`);
 const stats = require(`../../utils/stats`);
 

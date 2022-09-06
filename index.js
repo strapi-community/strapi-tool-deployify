@@ -4,7 +4,7 @@ const args = getArgs();
 const { input, flags } = args;
 const { clear, debug } = flags;
 
-(async() => {
+(async () => {
   // clear console
   if (clear) {
     console.clear();

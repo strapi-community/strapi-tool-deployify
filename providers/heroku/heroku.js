@@ -1,4 +1,5 @@
-const { config, spinner, chalk, detectHerokuCLI } = require(`../../utils`);
+const chalk = require(`chalk`);
+const { config, spinner, detectHerokuCLI } = require(`../../utils`);
 const shell = require(`shelljs`);
 const { createHerokuFile } = require(`./herokuFile`);
 const { herokuQuestions } = require(`../../core`);

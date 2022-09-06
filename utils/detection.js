@@ -6,10 +6,9 @@ const { getApiKey } = require(`../providers/heroku/apiKey`);
 const { pathExists } = require(`./utils`);
 
 const projectType = async () => {
+  const isTS = await pathExists(path.join(process.cwd(), `tsconfig.json`));
 
-  const isTS = await pathExists((path.join(process.cwd(), `tsconfig.json`)));
-
-  if(isTS){
+  if (isTS) {
     return `ts`;
   }
 
@@ -19,7 +18,7 @@ const projectType = async () => {
 const packageManager = async () => {
   const [isYarn, isNPM] = await Promise.all([
     pathExists(`yarn.lock`),
-    pathExists(`package-lock.json`),
+    pathExists(`package-lock.json`)
   ]);
 
   if (isYarn) {

@@ -126,4 +126,4 @@ const reset = () => {
   };
 };
 
-module.exports = { name:`reset`,invoke: reset };
+module.exports = { name: `reset`, invoke: reset };
