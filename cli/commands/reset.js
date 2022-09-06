@@ -1,129 +1,87 @@
+const chalk = require(`chalk`);
 const { unlink, rm } = require(`fs/promises`);
+const { pathExists, spinner, detect } = require(`../../utils`);
 const {
-  access,
-  constants,
-  spinner,
-  chalk,
-  config,
-  setConfig
-} = require(`../../utils`);
-const { destroyHerokuApp } = require(`../../providers/heroku`);
-const { herokuQuestions } = require(`../../core`);
-const { getProviders } = require(`../../core/questions`);
-const prompts = require(`prompts`);
+  buildConfig,
+  loadProviders,
+  loadProviderConfig
+} = require(`../../config`);
 
-const reset = () => {
-  const FILES_TO_REMOVE = [
-    {
-      directory: `${process.cwd()}`,
-      file: `server.${config.projectType}`
-    },
-    {
-      directory: `${process.cwd()}`,
-      file: `database.${config.projectType}`
-    }
-  ];
+const getRemovableFiles = config => {
+  return config.files(generatedFile => ({
+    directory: `${process.cwd()}`,
+    file: `${generatedFile}.${config.projectType}`
+  }));
+};
 
-  const _resetFiles = async () => {
-    spinner.start(` 🦄  ${chalk.yellow(`Searching for our files...`)} `);
-    for await (let file of FILES_TO_REMOVE) {
-      try {
-        await access(`${file.directory}/${file.file}`, constants.F_OK);
+const reset = async () => {
+  const projectType = await detect.projectType();
+
+  const config = buildConfig({ projectType });
+
+  await deleteGeneratedFiles(config);
+  await deleteGenerateDirectories();
+  await deleteProviderFiles(config);
+
+  spinner.stopAndPersist({
+    symbol: `🧹`,
+    text: ` ${chalk.yellow(`Project cleaned`)} \n`
+  });
+};
+
+const deleteGeneratedFiles = async config => {
+  const removableFiles = getRemovableFiles(config);
+
+  spinner.start(` 🦄  ${chalk.yellow(`Searching for our files...`)} `);
+  for (let file of removableFiles) {
+    try {
+      const isExistingFile = await pathExists(`${file.directory}/${file.file}`);
+      if (isExistingFile) {
         await unlink(`${file.directory}/${file.file}`);
         spinner.stopAndPersist({
           symbol: `🧹`,
           text: ` Cleaned up ${chalk.yellow(file.file)} \n`
         });
-      } catch (error) {
-        if (error.code === `ENOENT`) {
-          spinner.stopAndPersist({
-            symbol: `🧹`,
-            text: ` ${chalk.yellow(`Project looks clean `)} \n`
-          });
-          break;
-        }
       }
-    }
-    await _resetProviderSpecificFiles();
-    await _resetDirectories();
-  };
+    } catch (error) {}
+  }
+};
 
-  const _resetProviderSpecificFiles = async () => {
+const deleteProviderFiles = async config => {
+  const providers = loadProviders();
+  let providerConfig;
+  for (const provider in providers) {
     try {
-      await unlink(
-        `${config.provider === `heroku` ? `heroku.yml` : `render.yaml`}`
-      );
-      spinner.stopAndPersist({
-        symbol: `🧹`,
-        text: ` Cleaned up ${chalk.yellow(
-          `${config.provider === `heroku` ? `heroku.yml` : `render.yaml`}`
-        )} \n`
-      });
-    } catch (error) {
-      spinner.stopAndPersist({
-        symbol: `🧹`,
-        text: ` ${chalk.yellow(`No provider specific files to clean up`)} \n`
-      });
-    }
-  };
+      providerConfig = loadProviderConfig(provider);
+      const detectedProvider = detect.provider(providerConfig);
+      if (detectedProvider) {
+        break;
+      }
+    } catch (error) {}
+  }
 
-  const _resetDirectories = async () => {
-    spinner.start(` 🦄  ${chalk.yellow(`Searching for our directories...`)} `);
-    const directory = `${process.cwd()}/config/env`;
-    try {
-      await access(directory, constants.F_OK);
+  // setup hooks
+  const { hooks } = require(`${config.providersDir}/${providerConfig.name}`);
+  // init provider hooks
+  config.hooks.addHooks(hooks);
+
+  // trigger provider specific destroy
+  await config.hooks.callHook(`destroy`, { providerConfig, config });
+};
+
+const deleteGenerateDirectories = async () => {
+  spinner.start(` 🦄  ${chalk.yellow(`Searching for our directories...`)} `);
+  const directory = `${process.cwd()}/config/env`;
+  try {
+    const isExistingDirectory = await pathExists(directory);
+    if (isExistingDirectory) {
       await rm(directory, { recursive: true });
-      spinner.stopAndPersist({
-        symbol: `🧹`,
-        text: ` Cleand up ${chalk.yellow(`env`)} folder \n`
-      });
-    } catch (error) {
-      if (error.code === `ENOENT`) {
-        spinner.stopAndPersist({
-          symbol: `🧹`,
-          text: ` ${chalk.yellow(`Directories looks clean`)} \n`
-        });
-      }
     }
-  };
-
-  const _resetProvider = async () => {
-    setConfig(
-      await prompts([
-        {
-          type: `select`,
-          name: `provider`,
-          message: `What provider do you want to reset?`,
-          warn: `Not enabled yet`,
-          choices: getProviders()
-        }
-      ])
-    );
-
-    const { provider } = config;
-
-    switch (provider) {
-      case `heroku`:
-        setConfig(
-          await prompts([
-            {
-              type: `text`,
-              name: `projectName`,
-              message: `Project Name`,
-              validate: value => (value ? true : `Project name is required`)
-            }
-          ])
-        );
-        await destroyHerokuApp(config.providers.heroku);
-        await _resetFiles();
-        break;
-      case `render`:
-        await _resetFiles();
-        break;
-      default:
-        break;
-    }
-  };
+    spinner.stopAndPersist({
+      symbol: `🧹`,
+      text: ` Cleand up ${chalk.yellow(`env`)} folder \n`
+    });
+  } catch (error) {}
 };
 
 module.exports = { name: `reset`, invoke: reset };
