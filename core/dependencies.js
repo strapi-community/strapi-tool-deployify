@@ -10,6 +10,7 @@ const {
 const installDependecies = async () => {
   try {
     const dependenciesInstalled = await checkForOldDependecies();
+    if (dependenciesInstalled === null) return;
     if (dependenciesInstalled) {
       spinner.stopAndPersist({
         symbol: `📦`,
@@ -46,12 +47,11 @@ const checkForOldDependecies = async () => {
     }
     return false;
   } catch (error) {
-    console.log(error);
     spinner.stopAndPersist({
       symbol: `📦`,
       text: ` We can't access package.json \n`
     });
-    return true;
+    return null;
   }
 };
 module.exports = installDependecies;
