@@ -1,5 +1,5 @@
 const { copyHerokuFiles } = require(`./copyFiles`);
-const installDependecies = require(`./dependencies`);
+const { installDependencies } = require(`./dependencies`);
 const {
   genericQuestions,
   herokuQuestions,
@@ -8,16 +8,16 @@ const {
 } = require(`./questions`);
 const { generateServer, generateDatabase } = require(`./generateFiles`);
 const { configSetup } = require(`./configSetup`);
-const { useTool } = require(`./docker`);
+const { generateDockerFile } = require(`./docker`);
 module.exports = {
   copyHerokuFiles,
   generateDatabase,
-  installDependecies,
+  installDependencies,
   genericQuestions,
   herokuQuestions,
   renderQuestions,
   generateServer,
   configSetup,
-  useTool,
+  generateDockerFile,
   getProviders
 };

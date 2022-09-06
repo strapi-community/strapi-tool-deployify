@@ -1,43 +1,75 @@
+const { buildConfig, loadProviderConfig } = require(`../../config`);
 const {
-  genericQuestions,
   configSetup,
-  installDependecies,
-  useTool
+  installDependencies,
+  generateDockerFile
 } = require(`../../core`);
-const {
-  config,
-  detectDownloadsAndStars,
-  detectPackageManager,
-  detectProjectType
-} = require(`../../utils`);
+const { askGenerateQuestions } = require(`../../core/questions`);
+const { detect, spinner, chalk } = require(`../../utils`);
+
+const getDetectableSettings = async () => {
+  // package manager
+  spinner.start(` 💻 Detecting package manager... `);
+  const packageManager = await detect.packageManager();
+  spinner.stopAndPersist({
+    symbol: `📦 `,
+    text: `${chalk.bold.yellow(packageManager.toUpperCase())} detected \n`
+  });
+
+  // project type
+  spinner.start(` 💻 Detecting Project type... `);
+  const projectType = detect.projectType();
+  const projectTypeColoredText =
+    projectType === `ts`
+      ? chalk.bold.blueBright(`TypeScript`)
+      : chalk.bold.yellow(`JavaScript`);
+  spinner.stopAndPersist({
+    symbol: `🍿 `,
+    text: `${projectTypeColoredText} project detected \n`
+  });
+
+  return {
+    packageManager,
+    projectType
+  };
+};
+
 const generate = async () => {
-  await detectDownloadsAndStars();
-  await detectPackageManager();
-  await detectProjectType();
-  await genericQuestions();
+  const { packageManager, projectType } = getDetectableSettings();
 
+  const generateAnswers = await askGenerateQuestions();
+
+  // load configs
+  let config = buildConfig({
+    ...generateAnswers,
+    packageManager,
+    projectType
+  });
+  const providerConfig = loadProviderConfig(config.provider);
+
+  // setup hooks
   const { hooks } = require(`${config.providersDir}/${config.provider}`);
-
-  const providerConfig = config.providers[config.provider];
-
   // init provider hooks
   config.hooks.addHooks(hooks);
 
   // trigger provider setup
   // provider specific pre build
-  await config.hooks.callHook(`prebuild`, providerConfig);
+  await config.hooks.callHook(`prebuild`, { providerConfig, config });
 
   // general internal build
   await configSetup();
-  await installDependecies();
+  await installDependencies();
 
   // provider specific build
-  await config.hooks.callHook(`build`, providerConfig);
+  await config.hooks.callHook(`build`, { providerConfig, config });
 
   // provider specific post build
-  await config.hooks.callHook(`postbuild`, providerConfig);
+  await config.hooks.callHook(`postbuild`, { providerConfig, config });
 
-  config.useDocker && (await useTool());
+  // generate docker file
+  if (config.useDocker) {
+    await generateDockerFile(config);
+  }
 };
 
 module.exports = { invoke: generate };
