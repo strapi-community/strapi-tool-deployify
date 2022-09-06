@@ -1,4 +1,5 @@
-const { spinner, chalk } = require(`../../utils`);
+const chalk = require(`chalk`);
+const { spinner } = require(`../../utils`);
 const symbols = require(`log-symbols`);
 
 const debugOutput = message => {

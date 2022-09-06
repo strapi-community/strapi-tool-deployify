@@ -1,7 +1,8 @@
+const chalk = require(`chalk`);
 const { resolve } = require(`path`);
 const fs = require(`fs-extra`);
 const { Liquid } = require(`liquidjs`);
-const { config, spinner, chalk } = require(`../../utils`);
+const { config, spinner } = require(`../../utils`);
 
 const liquidEngine = new Liquid({
   root: resolve(__dirname, `templates`),

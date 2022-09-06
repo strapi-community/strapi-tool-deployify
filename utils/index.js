@@ -1,32 +1,16 @@
 const generateError = require(`./bugreport`);
 const { setConfig, config } = require(`./config`);
-const {
-  spinner,
-  replace,
-  chalk,
-  access,
-  constants,
-  copyFile
-} = require(`./utils`);
-const {
-  detectPackageManager,
-  detectProjectType,
-  detectDownloadsAndStars,
-  detectHerokuCLI
-} = require(`./detection`);
+const { spinner, replace, access, constants, copyFile } = require(`./utils`);
+const detect = require(`./detection`);
 
 module.exports = {
   spinner,
   replace,
-  chalk,
   access,
   constants,
   copyFile,
   generateError,
-  detectPackageManager,
-  detectProjectType,
   setConfig,
   config,
-  detectDownloadsAndStars,
-  detectHerokuCLI
+  detect
 };

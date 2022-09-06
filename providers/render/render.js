@@ -1,6 +1,7 @@
+const chalk = require(`chalk`);
 const { resolve } = require(`path`);
 const { Liquid } = require(`liquidjs`);
-const { config, spinner, chalk } = require(`../../utils`);
+const { config, spinner } = require(`../../utils`);
 const fs = require(`fs-extra`);
 const { renderQuestions } = require(`../../core`);
 

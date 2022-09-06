@@ -7,7 +7,7 @@ const {
   generateError,
   config
 } = require(`../utils`);
-const installDependecies = async () => {
+const installDependencies = async () => {
   try {
     const dependenciesInstalled = await checkForOldDependecies();
     if (dependenciesInstalled) {
@@ -54,4 +54,4 @@ const checkForOldDependecies = async () => {
     return true;
   }
 };
-module.exports = installDependecies;
+module.exports = { installDependencies };

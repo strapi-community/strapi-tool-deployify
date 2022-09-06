@@ -1,13 +1,14 @@
-const { spinner, chalk } = require(`../../utils`);
-const { config } = require(`../../config`);
+const chalk = require(`chalk`);
+const { spinner } = require(`../../utils`);
 const { pkg } = require(`../../package.json`);
+const { getGithubStats } = require(`../../utils/stats`);
 
 const goodbyeOutput = async ({ quit = false }) => {
   if (quit) {
     spinner.stopAndPersist({
       symbol: `☝️`,
       text: `  ${chalk.yellow(`Strapi`)} is now ${chalk.bold.blueBright(
-        `deployifyd`
+        `deployified`
       )} 🐳 - have a look at the logs above for more info. 🚀 \n`
     });
   }
@@ -17,12 +18,17 @@ const goodbyeOutput = async ({ quit = false }) => {
       `Star the project on GitHub if you liked this tool 🙏 \n`
     )}`
   });
-  spinner.stopAndPersist({
-    symbol: `🎉`,
-    text: ` ${chalk.bold.yellow(
-      `We now have got ${config.githubStars || 0} 🌟 and counting... \n`
-    )} `
-  });
+
+  try {
+    const { stars } = await getGithubStats();
+    spinner.stopAndPersist({
+      symbol: `🎉`,
+      text: ` ${chalk.bold.yellow(
+        `We now have got ${stars || 0} 🌟 and counting... \n`
+      )} `
+    });
+  } catch (error) {}
+
   console.log(`👉  ${pkg.url} 👈 \n`);
 };
 

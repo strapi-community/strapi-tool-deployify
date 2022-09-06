@@ -2,8 +2,8 @@ const prompts = require(`prompts`);
 
 const { setConfig, config } = require(`../utils`);
 
-const genericQuestions = async () => {
-  const questions = await prompts([
+const askGenerateQuestions = async () => {
+  return prompts([
     {
       type: `select`,
       name: `provider`,
@@ -47,12 +47,6 @@ const genericQuestions = async () => {
       initial: false
     }
   ]);
-  setConfig({
-    ...config,
-    ...questions,
-    projectName: questions.projectName,
-    env: questions.env
-  });
 };
 
 const herokuQuestions = async action => {
@@ -106,7 +100,7 @@ const _getRegions = () => {
 };
 
 module.exports = {
-  genericQuestions,
+  askGenerateQuestions,
   herokuQuestions,
   renderQuestions,
   getProviders

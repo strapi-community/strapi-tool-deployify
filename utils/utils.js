@@ -1,15 +1,20 @@
 const replace = require(`replace-in-file`);
-const { access, copyFile } = require(`fs/promises`);
-const { constants } = require(`fs`);
+const { copyFile, access } = require(`fs/promises`);
 const ora = require(`ora`);
 const spinner = ora({ text: `` });
-const chalk = require(`chalk`);
+
+const pathExists = async path => {
+  try {
+    await access(path);
+    return true;
+  } catch {
+    return false;
+  }
+};
 
 module.exports = {
   spinner,
   replace,
-  chalk,
-  access,
-  constants,
+  pathExists,
   copyFile
 };
