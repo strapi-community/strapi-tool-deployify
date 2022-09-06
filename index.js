@@ -4,13 +4,13 @@ const args = getArgs();
 const { input, flags } = args;
 const { clear, debug } = flags;
 
-(() => {
+(async() => {
   // clear console
   if (clear) {
     console.clear();
   }
 
-  outputs.welcome();
+  await outputs.welcome();
 
   if (debug) {
     outputs.debug(args);
@@ -27,7 +27,7 @@ const { clear, debug } = flags;
   let commandSucess = true;
   try {
     // invoke command found
-    cmd.invoke(args);
+    await cmd.invoke(args);
   } catch (error) {
     commandSucess = false;
     outputs.error(error);
