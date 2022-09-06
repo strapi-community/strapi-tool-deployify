@@ -6,31 +6,8 @@ const fetch = require(`node-fetch`);
 const child_process = require(`child_process`);
 const { getApiKey } = require(`../providers/heroku/apiKey`);
 
-const detectDownloadsAndStars = async () => {
-  spinner.start(` 🦄  ${chalk.yellow(`Prepping some magic`)} `);
-  try {
-    const npm = await fetch(
-      `https://api.npmjs.org/downloads/point/last-month/@strapi-community/deployify`
-    );
-    const github = await fetch(
-      `https://api.github.com/repos/strapi-community/strapi-tool-deployify`
-    );
 
-    const { downloads } = await npm.json();
-    const { stargazers_count } = await github.json();
-    setConfig({
-      npmDownloads: downloads || 0,
-      githubStars: stargazers_count || 0
-    });
 
-    spinner.stopAndPersist({
-      symbol: `🎉`,
-      text: ` ${chalk.bold.yellow(`You`)}, and ${chalk.bold.green(
-        config.npmDownloads || `large amount of`
-      )} other people have used this tool this month\n`
-    });
-  } catch (error) {
-    console.log(error);
   }
 };
 const detectProjectType = async () => {
