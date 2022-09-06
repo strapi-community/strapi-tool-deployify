@@ -8,12 +8,7 @@ const {
   constants,
   copyFile
 } = require(`./utils`);
-const {
-  detectPackageManager,
-  detectProjectType,
-  detectDownloadsAndStars,
-  detectHerokuCLI
-} = require(`./detection`);
+const detect = require(`./detection`);
 
 module.exports = {
   spinner,
@@ -23,10 +18,7 @@ module.exports = {
   constants,
   copyFile,
   generateError,
-  detectPackageManager,
-  detectProjectType,
   setConfig,
   config,
-  detectDownloadsAndStars,
-  detectHerokuCLI
+  detect
 };
