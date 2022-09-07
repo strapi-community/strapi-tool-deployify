@@ -1,57 +1,47 @@
+const chalk = require(`chalk`);
+const { pathExists } = require(`fs-extra`);
 const shell = require(`shelljs`);
-const {
-  spinner,
-  chalk,
-  access,
-  constants,
-  generateError,
-  config
-} = require(`../utils`);
-const installDependencies = async () => {
+const { outputs } = require(`../cli`);
+const { spinner } = require(`../utils`);
+
+const installDependencies = async packageManager => {
   try {
-    const dependenciesInstalled = await checkForOldDependecies();
+    spinner.start(`📦 Checking if dependencies already installed ...`);
+    const dependenciesInstalled = await hasOldDependencies();
     if (dependenciesInstalled) {
       spinner.stopAndPersist({
-        symbol: `📦`,
-        text: ` All dependencies are installed not doing anything \n`
+        symbol: `📦 `,
+        text: `dependencies already installed, skipping install \n`
       });
       return;
     }
 
     spinner.start(
       ` 📦 Installing dependencies using ${chalk.bold.yellow(
-        config.packageManager.toUpperCase()
+        packageManager.toUpperCase()
       )}...`
     );
 
-    shell.exec(
-      `${config.packageManager} ${
-        config.packageManager === `yarn` ? `add` : `install`
-      } pg pg-connection-string`,
-      { silent: true }
-    );
-  } catch (error) {
-    await generateError(error);
+    const installCommand = packageManager === `yarn` ? `add` : `install`;
+    shell.exec(`${packageManager} ${installCommand} pg pg-connection-string`, {
+      silent: true
+    });
+    outputs.success(`All dependencies installed`);
+  } catch (err) {
+    outputs.error(err);
   }
 };
-const checkForOldDependecies = async () => {
-  try {
-    spinner.start(` 📦 Checking for old dependencies...`);
 
-    await access(`package.json`, constants.R_OK);
-
-    const pkg = require(`${process.cwd()}/package.json`);
-    if (pkg.dependencies[`pg`] || pkg.dependencies[`pg-connection-string`]) {
-      return true;
-    }
+const hasOldDependencies = async () => {
+  const isReadablePkg = await pathExists(`package.json`);
+  if (!isReadablePkg) {
     return false;
-  } catch (error) {
-    console.log(error);
-    spinner.stopAndPersist({
-      symbol: `📦`,
-      text: ` We can't access package.json \n`
-    });
+  }
+
+  const pkg = require(`${process.cwd()}/package.json`);
+  if (pkg.dependencies[`pg`] || pkg.dependencies[`pg-connection-string`]) {
     return true;
   }
 };
+
 module.exports = { installDependencies };

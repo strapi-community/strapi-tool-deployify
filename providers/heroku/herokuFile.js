@@ -1,35 +1,20 @@
-const chalk = require(`chalk`);
+const path = require(`path`);
 const { resolve } = require(`path`);
-const fs = require(`fs-extra`);
 const { Liquid } = require(`liquidjs`);
-const { config, spinner } = require(`../../utils`);
+const { file } = require(`../../core`);
 
 const liquidEngine = new Liquid({
   root: resolve(__dirname, `templates`),
   extname: `.liquid`
 });
 
-const createHerokuFile = async herokuConfig => {
-  try {
-    const template = liquidEngine.renderFileSync(`heroku`, {
-      dockerFile:
-        config.env === `production` ? `Dockerfile.prod` : `Dockerfile`,
-      env: config.env
-    });
-    const file = fs.createWriteStream(
-      `${config.outDir}/${herokuConfig.outputFileName}`
-    );
-    file.write(template);
-    file.end();
-
-    await spinner.stopAndPersist({
-      symbol: `⚙️`,
-      text: `  Added and configured ${chalk.bold.green(
-        config.provider.toUpperCase()
-      )} to project \n`
-    });
-  } catch (error) {
-    console.log(error);
-  }
+const generateHerokuTemplate = ({ config, herokuConfig }) => {
+  const template = liquidEngine.renderFileSync(`heroku`, {
+    dockerFile: config.env === `production` ? `Dockerfile.prod` : `Dockerfile`,
+    env: config.env
+  });
+  const filePath = path.join(config.outDir, herokuConfig.outputFileName);
+  return file.generate(filePath, template);
 };
-module.exports = { createHerokuFile };
+
+module.exports = { generateHerokuTemplate };

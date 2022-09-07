@@ -1,6 +1,6 @@
 const { defu } = require(`defu`);
 const defaultConfig = require(`./default`);
-const providers = require(`./providers`);
+const { providers } = require(`./providers`);
 
 const loadConfig = options => {
   return defu(options, defaultConfig);

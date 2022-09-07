@@ -1,9 +1,10 @@
 const path = require(`path`);
 const shell = require(`shelljs`);
+const { pathExists } = require(`fs-extra`);
 const { setConfig, config } = require(`./config`);
 const child_process = require(`child_process`);
 const { getApiKey } = require(`../providers/heroku/apiKey`);
-const { pathExists } = require(`./utils`);
+const { loadProviders, loadProviderConfig } = require(`../config`);
 
 const projectType = async () => {
   const isTS = await pathExists(path.join(process.cwd(), `tsconfig.json`));
@@ -13,6 +14,26 @@ const projectType = async () => {
   }
 
   return `js`;
+};
+
+const provider = async () => {
+  const providers = loadProviders();
+
+  let providerName = null;
+  for (const provider in providers) {
+    try {
+      const providerConfig = loadProviderConfig(provider);
+      const hasProviderGeneratedFile = await pathExists(
+        providerConfig.outputFileName
+      );
+      if (hasProviderGeneratedFile) {
+        providerName = providerConfig.name;
+        break;
+      }
+    } catch (error) {}
+  }
+
+  return providerName;
 };
 
 const packageManager = async () => {
@@ -65,5 +86,6 @@ const herokuCLI = async () => {
 module.exports = {
   packageManager,
   projectType,
+  provider,
   herokuCLI
 };
