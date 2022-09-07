@@ -1,9 +1,12 @@
 const path = require(`path`);
 const shell = require(`shelljs`);
+const chalk = require(`chalk`);
+const os = require(`os`);
 const { pathExists } = require(`fs-extra`);
-const { setConfig, config } = require(`./config`);
+const { setConfig, config } = require(`../config`);
+const { spinner } = require(`./spinner`);
 const child_process = require(`child_process`);
-const { getApiKey } = require(`../providers/heroku/apiKey`);
+const { getApiKey } = require(`../providers/heroku/authentication`);
 const { loadProviders, loadProviderConfig } = require(`../config`);
 
 const projectType = async () => {

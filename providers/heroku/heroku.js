@@ -1,9 +1,10 @@
 const chalk = require(`chalk`);
 const { spinner, detect } = require(`../../utils`);
-const { generateHerokuTemplate } = require(`./herokuFile`);
+const { generateHerokuTemplate } = require(`./herokuTemplate`);
 const { outputs } = require(`../../cli`);
 const { generateHerokuServices } = require(`./generateHerokuServices`);
 const { destroyHerokuApp } = require(`./destroyHerokuApp`);
+const { herokuAuthenticate } = require(`./authentication`);
 
 const herokuSetup = async ({ config, herokuConfig }) => {
   outputs.info(`Generating heroku configuration file`);
@@ -30,6 +31,7 @@ module.exports = {
     async prebuild() {
       await outputs.info(`This tool will only create NEW project on heroku`);
       await detect.herokuCLI();
+      if (!detect.netrcExists()) await herokuAuthenticate();
     },
     async build({ config, herokuConfig }) {
       await herokuSetup({ config, herokuConfig });
