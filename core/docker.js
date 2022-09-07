@@ -1,7 +1,7 @@
 const shell = require(`shelljs`);
-const { config, spinner, chalk } = require(`../utils`);
+const { spinner, chalk } = require(`../utils`);
 
-const useTool = async () => {
+const generateDockerFile = async config => {
   shell.exec(
     `npx @strapi-community/dockerize new --usecompose=false --env=${config.env} --projecttype=${config.projectType} --packageManager=${config.packageManager} --dbtype=postgres`,
     { silent: true }
@@ -15,4 +15,4 @@ const useTool = async () => {
   });
 };
 
-module.exports = { useTool };
+module.exports = { generateDockerFile };

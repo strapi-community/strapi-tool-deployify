@@ -1,5 +1,5 @@
-const { herokuHooks, destroyHerokuApp } = require(`./heroku`);
+const { herokuHooks } = require(`./heroku`);
+
 module.exports = {
-  hooks: herokuHooks,
-  destroyHerokuApp
+  hooks: herokuHooks
 };

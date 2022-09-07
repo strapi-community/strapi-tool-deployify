@@ -31,4 +31,6 @@ const options = {
   flags
 };
 
-module.exports = meow(helpText, options);
+module.exports = {
+  getArgs: () => meow(helpText, options)
+};

@@ -1,22 +1,26 @@
 const prompts = require(`prompts`);
+const { loadProviders, loadProviderConfig } = require(`../config`);
 
-const { setConfig, config } = require(`../utils`);
-
-const genericQuestions = async () => {
-  const questions = await prompts([
-    {
-      type: `select`,
-      name: `provider`,
-      message: `What provider do you want to use?`,
-      warn: `Not enabled yet`,
-      choices: getProviders()
-    },
+const askGenerateQuestions = async () => {
+  let initialQuestions = [
     {
       type: `text`,
       name: `projectName`,
       message: `Project Name`,
       validate: value => (value ? true : `Project name is required`)
     },
+    {
+      type: `select`,
+      name: `provider`,
+      message: `What provider do you want to use?`,
+      warn: `Not enabled yet`,
+      choices: getProviders()
+    }
+  ];
+
+  const initialAnswers = await prompts(initialQuestions);
+
+  let supplementaryQuestions = [
     {
       type: `select`,
       name: `env`,
@@ -46,49 +50,71 @@ const genericQuestions = async () => {
       message: `Do you have a Docker.prod file or do you want us to create one?`,
       initial: false
     }
-  ]);
-  setConfig({
-    ...config,
-    ...questions,
-    projectName: questions.projectName,
-    env: questions.env
-  });
-};
+  ];
 
-const herokuQuestions = async action => {
-  const questions = await prompts([
-    {
-      type: `select`,
-      name: `region`,
-      message: `What region do you want to ${action}? 🌍`,
-      choices: _getRegions()
-    }
-  ]);
-  setConfig({
-    ...config,
-    ...questions
-  });
-};
-
-const renderQuestions = async () => {
-  const questions = await prompts([
-    {
+  const providerRegions = loadProviderConfig(initialQuestions.provider).regions;
+  if (providerRegions) {
+    supplementaryQuestions.unshift({
       type: `select`,
       name: `region`,
       message: `What region do you want to deploy to? 🌍`,
-      choices: _getRegions()
+      choices: providerRegions
+    });
+  }
+  const supplementaryAnswers = await prompts(supplementaryQuestions);
+
+  return {
+    ...initialAnswers,
+    ...supplementaryAnswers
+  };
+};
+
+const askResetQuestions = async detectedProvider => {
+  let { environments } = await prompts([
+    {
+      type: `multiselect`,
+      name: `environment`,
+      message: `Pick the environments to clean`,
+      choices: [
+        { title: `Development`, value: `development` },
+        { title: `Production`, value: `production` }
+      ],
+      min: 1,
+      hint: `- Space to select. Return to submit`
     }
   ]);
-  setConfig({
-    ...config,
-    ...questions
-  });
+  if (detectedProvider) {
+    const { providerConfirmation } = await prompts([
+      {
+        type: `confirm`,
+        name: `providerConfirmation`,
+        initial: true,
+        message: `Is ${detectedProvider} the provider you want to reset?`
+      }
+    ]);
+
+    if (providerConfirmation) {
+      return { environments, provider };
+    }
+  }
+
+  const { provider } = await prompts([
+    {
+      type: `select`,
+      name: `provider`,
+      message: `What provider do you want to use?`,
+      warn: `Not enabled yet`,
+      choices: getProviders()
+    }
+  ]);
+
+  return { environments, provider };
 };
 
 const getProviders = () => {
   let providerChoices = [];
-  for (const providerKey in config.providers) {
-    const provider = config.providers[providerKey];
+  for (const providerKey in loadProviders()) {
+    const provider = loadProviderConfig(providerKey);
 
     providerChoices.push({
       title: provider.name,
@@ -100,14 +126,7 @@ const getProviders = () => {
   return providerChoices;
 };
 
-const _getRegions = () => {
-  const providerConfig = config.providers[config.provider];
-  return providerConfig.regions;
-};
-
 module.exports = {
-  genericQuestions,
-  herokuQuestions,
-  renderQuestions,
-  getProviders
+  askGenerateQuestions,
+  askResetQuestions
 };

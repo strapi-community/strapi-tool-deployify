@@ -1,65 +1,41 @@
 #!/usr/bin/env node
-const { cli, init, log, resetProvider } = require(`./cli`);
-const {
-  genericQuestions,
-  configSetup,
-  installDependecies
-} = require(`./core/`);
-
-const {
-  detectPackageManager,
-  goodbye,
-  detectDownloadsAndStars,
-  detectProjectType,
-  config
-} = require(`./utils`);
-const { useTool } = require(`./providers/heroku`);
-
-const input = cli.input;
-const flags = cli.flags;
+const { commands, outputs, getArgs } = require(`./cli`);
+const args = getArgs();
+const { input, flags } = args;
 const { clear, debug } = flags;
+
 (async () => {
-  init({ clear });
-  input.includes(`help`) && cli.showHelp(0);
-  if (input.includes(`reset`)) {
-    await resetProvider();
-
-    await goodbye();
-    return;
+  // clear console
+  if (clear) {
+    console.clear();
   }
-  debug && log(flags);
+
+  await outputs.welcome();
+
+  if (debug) {
+    outputs.debug(args);
+  }
+
+  // retrieve command
+  let cmd = commands[input];
+
+  // default to generate
+  if (!cmd) {
+    cmd = commands[`generate`];
+  }
+
+  let commandSucess = true;
   try {
-    await detectDownloadsAndStars();
-    await detectPackageManager();
-    await detectProjectType();
-    await genericQuestions();
-
-    const { hooks } = require(`${config.providersDir}/${config.provider}`);
-
-    const providerConfig = config.providers[config.provider];
-
-    // init provider hooks
-    config.hooks.addHooks(hooks);
-
-    // trigger provider setup
-    // provider specific pre build
-    await config.hooks.callHook(`prebuild`, providerConfig);
-
-    // general internal build
-    await configSetup();
-    await installDependecies();
-
-    // provider specific build
-    await config.hooks.callHook(`build`, providerConfig);
-
-    // provider specific post build
-    await config.hooks.callHook(`postbuild`, providerConfig);
-
-    config.useDocker && (await useTool());
-
-    await goodbye();
+    // invoke command found
+    await cmd.invoke(args);
   } catch (error) {
-    console.log(error);
-    await goodbye(false);
+    commandSucess = false;
+    outputs.error(error);
   }
+
+  outputs.goodbye({ quit: commandSucess });
 })();
+
+process.on(`unhandledRejection`, err => {
+  outputs.error(err);
+});

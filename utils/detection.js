@@ -1,98 +1,59 @@
 const path = require(`path`);
-const { spinner, chalk, constants, access } = require(`./utils`);
 const shell = require(`shelljs`);
+const { pathExists } = require(`fs-extra`);
 const { setConfig, config } = require(`./config`);
-const fetch = require(`node-fetch`);
 const child_process = require(`child_process`);
 const { getApiKey } = require(`../providers/heroku/apiKey`);
+const { loadProviders, loadProviderConfig } = require(`../config`);
 
-const detectDownloadsAndStars = async () => {
-  spinner.start(` 🦄  ${chalk.yellow(`Prepping some magic`)} `);
-  try {
-    const npm = await fetch(
-      `https://api.npmjs.org/downloads/point/last-month/@strapi-community/deployify`
-    );
-    const github = await fetch(
-      `https://api.github.com/repos/strapi-community/strapi-tool-deployify`
-    );
+const projectType = async () => {
+  const isTS = await pathExists(path.join(process.cwd(), `tsconfig.json`));
 
-    const { downloads } = await npm.json();
-    const { stargazers_count } = await github.json();
-    setConfig({
-      npmDownloads: downloads || 0,
-      githubStars: stargazers_count || 0
-    });
-
-    spinner.stopAndPersist({
-      symbol: `🎉`,
-      text: ` ${chalk.bold.yellow(`You`)}, and ${chalk.bold.green(
-        config.npmDownloads || `large amount of`
-      )} other people have used this tool this month\n`
-    });
-  } catch (error) {
-    console.log(error);
+  if (isTS) {
+    return `ts`;
   }
-};
-const detectProjectType = async () => {
-  spinner.start(` 💻 Detecting Project type... `);
-  try {
-    if (config.quickStart) {
-      spinner.stopAndPersist({
-        symbol: `🍿`,
-        text: ` ${
-          config.projectType === `ts`
-            ? `${chalk.bold.blueBright(`TypeScript`)}`
-            : `${chalk.bold.yellow(`JavaScript`)}`
-        } set by cli arguments \n`
-      });
-      return;
-    }
-    await access(path.join(process.cwd(), `tsconfig.json`));
-    setConfig({ projectType: `ts` });
-  } catch (error) {}
 
-  if (!config.quickStart) {
-    spinner.stopAndPersist({
-      symbol: `🍿`,
-      text: ` ${
-        config.projectType === `ts`
-          ? `${chalk.bold.blueBright(`TypeScript`)}`
-          : `${chalk.bold.yellow(`JavaScript`)}`
-      } project detected \n`
-    });
-  }
+  return `js`;
 };
 
-const detectPackageManager = async () => {
-  spinner.start(` 💻 Detecting package manager... `);
-  try {
-    if (config.quickStart) {
-      spinner.stopAndPersist({
-        symbol: `🍿`,
-        text: ` ${
-          config.packageManager === `yarn`
-            ? `${chalk.bold.yellow(`Yarn`)}`
-            : `${chalk.bold.greenBright(`NPM`)}`
-        } set by cli arguments \n`
-      });
-      return;
-    }
-    await access(`yarn.lock`, constants.R_OK);
-    setConfig({ packageManager: `yarn` });
-  } catch (error) {
-    setConfig({ packageManager: `npm` });
+const provider = async () => {
+  const providers = loadProviders();
+
+  let providerName = null;
+  for (const provider in providers) {
+    try {
+      const providerConfig = loadProviderConfig(provider);
+      const hasProviderGeneratedFile = await pathExists(
+        providerConfig.outputFileName
+      );
+      if (hasProviderGeneratedFile) {
+        providerName = providerConfig.name;
+        break;
+      }
+    } catch (error) {}
   }
-  if (!config.quickStart) {
-    spinner.stopAndPersist({
-      symbol: `📦`,
-      text: ` ${chalk.bold.yellow(
-        config.packageManager.toUpperCase()
-      )} detected \n`
-    });
-  }
+
+  return providerName;
 };
 
-const detectHerokuCLI = async () => {
+const packageManager = async () => {
+  const [isYarn, isNPM] = await Promise.all([
+    pathExists(`yarn.lock`),
+    pathExists(`package-lock.json`)
+  ]);
+
+  if (isYarn) {
+    return `yarn`;
+  }
+
+  if (isNPM) {
+    return `npm`;
+  }
+
+  return `unknown`;
+};
+
+const herokuCLI = async () => {
   const herokuCLI = await shell.which(`heroku`);
   if (herokuCLI) {
     setConfig({ herokuCLI: true });
@@ -123,8 +84,8 @@ const detectHerokuCLI = async () => {
 };
 
 module.exports = {
-  detectPackageManager,
-  detectProjectType,
-  detectDownloadsAndStars,
-  detectHerokuCLI
+  packageManager,
+  projectType,
+  provider,
+  herokuCLI
 };
