@@ -3,7 +3,7 @@ const { pathExists } = require(`fs-extra`);
 const path = require(`path`);
 const { spinner } = require(`../../../utils`);
 const { file, getTemplate } = require(`../../../core`);
-const { outputs } = require(`../..`);
+const { outputs } = require(`../../outputs`);
 
 const generateConfigFiles = async config => {
   const fileExtension = config.projectType;

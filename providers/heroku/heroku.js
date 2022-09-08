@@ -1,7 +1,7 @@
 const chalk = require(`chalk`);
 const { spinner, detect } = require(`../../utils`);
 const { generateHerokuTemplate } = require(`./herokuTemplate`);
-const { outputs } = require(`../../cli`);
+const { outputs } = require(`../../cli/outputs`);
 const { generateHerokuServices } = require(`./generateHerokuServices`);
 const { destroyHerokuApp } = require(`./destroyHerokuApp`);
 const { herokuAuthenticate } = require(`./authentication`);
