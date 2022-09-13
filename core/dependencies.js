@@ -1,7 +1,7 @@
 const chalk = require(`chalk`);
 const { pathExists } = require(`fs-extra`);
 const shell = require(`shelljs`);
-const { outputs } = require(`../cli/outputs`);
+const outputs = require(`../cli/outputs`);
 const { spinner } = require(`../utils`);
 
 const installDependencies = async packageManager => {

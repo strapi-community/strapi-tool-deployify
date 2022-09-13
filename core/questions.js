@@ -52,7 +52,7 @@ const askGenerateQuestions = async () => {
     }
   ];
 
-  const providerRegions = loadProviderConfig(initialQuestions.provider).regions;
+  const providerRegions = loadProviderConfig(initialAnswers.provider).regions;
   if (providerRegions) {
     supplementaryQuestions.unshift({
       type: `select`,

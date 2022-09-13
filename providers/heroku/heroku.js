@@ -1,7 +1,7 @@
 const chalk = require(`chalk`);
 const { spinner, detect } = require(`../../utils`);
 const { generateHerokuTemplate } = require(`./herokuTemplate`);
-const { outputs } = require(`../../cli/outputs`);
+const outputs = require(`../../cli/outputs`);
 const { generateHerokuServices } = require(`./generateHerokuServices`);
 const { destroyHerokuApp } = require(`./destroyHerokuApp`);
 const { herokuAuthenticate } = require(`./authentication`);
@@ -33,11 +33,11 @@ module.exports = {
       await detect.herokuCLI();
       if (!detect.netrcExists()) await herokuAuthenticate();
     },
-    async build({ config, herokuConfig }) {
-      await herokuSetup({ config, herokuConfig });
+    async build({ config, providerConfig }) {
+      await herokuSetup({ config, herokuConfig: providerConfig });
     },
-    async postbuild({ config, herokuConfig }) {
-      await generateHerokuServices({ config, herokuConfig });
+    async postbuild({ config, providerConfig }) {
+      await generateHerokuServices({ config, herokuConfig: providerConfig });
     },
     async destroy() {
       await destroyHerokuApp();

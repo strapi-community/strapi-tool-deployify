@@ -1,6 +1,6 @@
 const chalk = require(`chalk`);
 const { spinner } = require(`../../utils`);
-const { pkg } = require(`../../package.json`);
+const pkg = require(`../../package.json`);
 const { getGithubStats } = require(`../../utils/stats`);
 
 const goodbyeOutput = async ({ quit = false }) => {
