@@ -4,7 +4,7 @@ const { getDetectableSettings } = require(`./getDetectableSettings`);
 const { triggerGenerateHooks } = require(`./triggerGenerateHooks`);
 
 const generate = async () => {
-  const { packageManager, projectType } = getDetectableSettings();
+  const { packageManager, projectType } = await getDetectableSettings();
 
   const generateAnswers = await askGenerateQuestions();
 

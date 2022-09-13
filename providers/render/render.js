@@ -1,7 +1,7 @@
 const chalk = require(`chalk`);
 const { spinner } = require(`../../utils`);
 const { renderQuestions } = require(`../../core`);
-const { outputs } = require(`../../cli/outputs`);
+const outputs = require(`../../cli/outputs`);
 const { generateRenderTemplate } = require(`./renderFile`);
 
 const renderSetup = async ({ config, renderConfig }) => {
