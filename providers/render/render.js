@@ -33,9 +33,6 @@ const renderSetup = async ({ config, renderConfig }) => {
 
 module.exports = {
   renderHooks: {
-    async prebuild() {
-      await renderQuestions();
-    },
     async build({ config, renderConfig }) {
       await renderSetup({ config, renderConfig });
     }
