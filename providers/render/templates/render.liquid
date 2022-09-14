@@ -6,7 +6,8 @@ services:
     {%- if env == 'production' %}
     dockerfilePath: ./Dockerfile.prod
     {%- else %}
-    dockerfilePath: ./Dockerfile{%- endif %}
+    dockerfilePath: ./Dockerfile
+    {%- endif %}
     {%- else %}
     env: node
 {% endif %}
