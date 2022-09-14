@@ -54,18 +54,30 @@ _Note_ that **RESET** will delete the `everything` from heroku related to the pr
 
 - Easy deploy of your project to some cloud platforms
 
+## 🌤 Cloud Support
+
+Default - Create enviroments for strapi project, user will need to push to version control and deploy to cloud provider
+🚀 - Automatic - Creating apps, databases, setting up env variables.
+🚝 - Semi Automatic - Creating configuration files. Some manual steps required.
+
+| **Provider**  | Is Supported | Semi Automatic 🚝 / Automatic 🚀 | ⚙️ Notes                                     |
+| ------------- | ------------ | -------------------------------- | -------------------------------------------- |
+| Heroku        | ✅           | 🚀                               | Manual deployment                            |
+| Render        | ✅           | 🚝                               | Push to repo, connect repo to render website |
+| AWS           | ❌           | ❌                               | Not Added yet                                |
+| Google        | ❌           | ❌                               | Not Added yet                                |
+| Digital Ocean | ❌           | ❌                               | Not Added yet                                |
+| Platform.sh   | ❌           | ❌                               | Not Added yet                                |
+| Railway.app   | ❌           | ❌                               | Not Added yet                                |
+
 ## 🖐 Requirements
 
 Supported Strapi Versions:
 
-| Strapi Version  | Is Compatible | Last Tested |
-| --------------- | ------------- | ----------- |
-| v3.x.x          | ❌            | Never       |
-| v4.0.x          | ✅            | Never       |
-| v4.1.x          | ✅            | Never       |
-| v4.2.x          | ✅            | Never       |
-| v4.3.x          | ✅            | Never       |
-| Future Versions | ✅            | Never       |
+| Strapi Version | Is Compatible |
+| -------------- | ------------- |
+| v3             | ❌            |
+| v4             | ✅            |
 
 **This tool will not work with Strapi v3 projects as it utilizes the V4 folder format that don't exist in the v3!**
 
