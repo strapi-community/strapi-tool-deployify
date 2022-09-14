@@ -2,19 +2,20 @@ const shell = require(`shelljs`);
 const os = require(`os`);
 const path = require(`path`);
 const { access } = require(`fs/promises`);
-const { config } = require(`../../config`);
+const { loadProviderConfig } = require(`../../config`);
 const { spinner } = require(`../../utils/spinner`);
 const childProcess = require(`child_process`);
 
 const getApiKey = async () => {
+  const herokuProvider = loadProviderConfig(`heroku`);
   try {
     const apiToken = await shell
-      .cat(netRCPath)
+      .cat(netRCPath())
       .grep(
         `[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}`
       )
       .substring(11, 47);
-    config.providers.heroku.apiToken = apiToken;
+    herokuProvider.apiToken = apiToken;
   } catch (error) {
     spinner.stopAndPersist({
       symbol: `❌`,
@@ -46,7 +47,8 @@ const netRCPath = () => {
 
 const netrcExists = async () => {
   try {
-    await access(path.join(os.homedir(), netRCPath));
+    const test = await access(path.join(os.homedir(), netRCPath()));
+    console.log(test);
     return true;
   } catch (error) {
     return false;

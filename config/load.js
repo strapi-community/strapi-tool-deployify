@@ -7,7 +7,7 @@ const loadConfig = (...options) => {
 };
 
 const loadProviderConfig = name => {
-  return providers[name];
+  return providers[name.toLowerCase()];
 };
 
 const loadProviders = () => {

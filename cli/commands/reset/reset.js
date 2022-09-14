@@ -9,8 +9,9 @@ const reset = async () => {
   const projectType = await detect.projectType();
 
   const detectedProviderName = await detect.provider();
+  console.log(detectedProviderName);
 
-  const { provider, environments } = await askResetQuestions(
+  const { environments, provider } = await askResetQuestions(
     detectedProviderName
   );
 
@@ -18,8 +19,10 @@ const reset = async () => {
 
   spinner.start(` 🦄  ${chalk.yellow(`Searching for our directories...`)} `);
   await deleteEnvDirs(environments);
-  spinner.start(` 🦄  ${chalk.yellow(`Directory search completed`)} `);
-
+  spinner.stopAndPersist({
+    symbol: `🦄`,
+    text: chalk.yellow(`Directory search completed`)
+  });
   await triggerResetHooks(config);
 
   spinner.stopAndPersist({

@@ -1,5 +1,5 @@
 const prompts = require(`prompts`);
-const { loadProviders, loadProviderConfig } = require(`../config`);
+const { loadProviders, loadProviderConfig, buildConfig } = require(`../config`);
 
 const askGenerateQuestions = async () => {
   let initialQuestions = [
@@ -73,7 +73,7 @@ const askResetQuestions = async detectedProvider => {
   let { environments } = await prompts([
     {
       type: `multiselect`,
-      name: `environment`,
+      name: `environments`,
       message: `Pick the environments to clean`,
       choices: [
         { title: `Development`, value: `development` },
@@ -92,9 +92,11 @@ const askResetQuestions = async detectedProvider => {
         message: `Is ${detectedProvider} the provider you want to reset?`
       }
     ]);
-
+    if (detectedProvider === `Heroku`) {
+      await getProjectName();
+    }
     if (providerConfirmation) {
-      return { environments, provider };
+      return { environments, provider: detectedProvider };
     }
   }
 
@@ -107,8 +109,22 @@ const askResetQuestions = async detectedProvider => {
       choices: getProviders()
     }
   ]);
-
+  if (provider === `Heroku`) {
+    await getProjectName();
+  }
   return { environments, provider };
+};
+
+const getProjectName = async () => {
+  const projectName = await prompts([
+    {
+      type: `text`,
+      name: `projectName`,
+      message: `Project Name`,
+      validate: value => (value ? true : `Project name is required`)
+    }
+  ]);
+  buildConfig(projectName);
 };
 
 const getProviders = () => {

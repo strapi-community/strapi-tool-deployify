@@ -4,14 +4,11 @@ const { spinner } = require(`../../utils`);
 
 const destroyHerokuApp = async ({ config, herokuConfig }) => {
   const projectName = config.projectName;
-
   spinner.stopAndPersist({
     symbol: `💀 `,
     text: `Tearing down ${chalk.magenta.bold(
       projectName.toUpperCase()
-    )} on ${chalk.magenta.bold(`Heroku`)} (${chalk.blue.bold(
-      config.region.toUpperCase()
-    )})`
+    )} on ${chalk.magenta.bold(`Heroku`)}`
   });
 
   shell.exec(

@@ -1,9 +1,8 @@
 const path = require(`path`);
 const shell = require(`shelljs`);
 const chalk = require(`chalk`);
-const os = require(`os`);
 const { pathExists } = require(`fs-extra`);
-const { setConfig, config } = require(`../config`);
+const { buildConfig } = require(`../config`);
 const { spinner } = require(`./spinner`);
 const child_process = require(`child_process`);
 const { getApiKey } = require(`../providers/heroku/authentication`);
@@ -59,14 +58,15 @@ const packageManager = async () => {
 const herokuCLI = async () => {
   const herokuCLI = await shell.which(`heroku`);
   if (herokuCLI) {
-    setConfig({ herokuCLI: true });
+    buildConfig({ herokuCLI: true });
 
     spinner.stopAndPersist({
       symbol: `💻`,
       text: ` ${chalk.bold.magenta(`Heroku`)} CLI detected \n`
     });
     await getApiKey();
-    if (!config.providers.heroku.apiToken) {
+    const providers = loadProviders();
+    if (!providers.heroku.apiToken) {
       child_process.execFileSync(`heroku`, [`login`], { stdio: `inherit` });
       await getApiKey();
     }

@@ -4,7 +4,7 @@ const { generateHerokuTemplate } = require(`./herokuTemplate`);
 const outputs = require(`../../cli/outputs`);
 const { generateHerokuServices } = require(`./generateHerokuServices`);
 const { destroyHerokuApp } = require(`./destroyHerokuApp`);
-const { herokuAuthenticate } = require(`./authentication`);
+const { herokuAuthenticate, netrcExists } = require(`./authentication`);
 
 const herokuSetup = async ({ config, herokuConfig }) => {
   outputs.info(`Generating heroku configuration file`);
@@ -31,7 +31,7 @@ module.exports = {
     async prebuild() {
       await outputs.info(`This tool will only create NEW project on heroku`);
       await detect.herokuCLI();
-      if (!detect.netrcExists()) await herokuAuthenticate();
+      if (!netrcExists()) await herokuAuthenticate();
     },
     async build({ config, providerConfig }) {
       await herokuSetup({ config, herokuConfig: providerConfig });
@@ -39,8 +39,8 @@ module.exports = {
     async postbuild({ config, providerConfig }) {
       await generateHerokuServices({ config, herokuConfig: providerConfig });
     },
-    async destroy() {
-      await destroyHerokuApp();
+    async destroy({ config, providerConfig }) {
+      await destroyHerokuApp({ config, herokuConfig: providerConfig });
     }
   }
 };
