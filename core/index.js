@@ -1,23 +1,13 @@
-const { copyHerokuFiles } = require(`./copyFiles`);
-const installDependecies = require(`./dependencies`);
-const {
-  genericQuestions,
-  herokuQuestions,
-  renderQuestions,
-  getProviders
-} = require(`./questions`);
-const { generateServer, generateDatabase } = require(`./generateFiles`);
-const { configSetup } = require(`./configSetup`);
-const { useTool } = require(`./docker`);
+const { installDependencies } = require(`./dependencies`);
+const { generateDockerFile } = require(`./docker`);
+const file = require(`./file`);
+const { askGenerateQuestions, askResetQuestions } = require(`./questions`);
+const { getTemplate } = require(`./templates`);
 module.exports = {
-  copyHerokuFiles,
-  generateDatabase,
-  installDependecies,
-  genericQuestions,
-  herokuQuestions,
-  renderQuestions,
-  generateServer,
-  configSetup,
-  useTool,
-  getProviders
+  installDependencies,
+  generateDockerFile,
+  file,
+  askGenerateQuestions,
+  askResetQuestions,
+  getTemplate
 };

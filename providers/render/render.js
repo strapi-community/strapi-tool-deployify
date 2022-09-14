@@ -1,53 +1,43 @@
-const { resolve } = require(`path`);
-const { Liquid } = require(`liquidjs`);
-const { config, spinner, chalk } = require(`../../utils`);
-const fs = require(`fs-extra`);
-const { renderQuestions } = require(`../../core`);
+const chalk = require(`chalk`);
+const { spinner } = require(`../../utils`);
+const outputs = require(`../../cli/outputs`);
+const { generateRenderTemplate } = require(`./renderFile`);
+const { file } = require(`../../core`);
 
-const liquidEngine = new Liquid({
-  root: resolve(__dirname, `templates`),
-  extname: `.liquid`
-});
+const renderSetup = async ({ config, renderConfig }) => {
+  outputs.info(`Generating render configuration file`);
 
-const renderSetup = async renderConfig => {
-  try {
-    const template = liquidEngine.renderFileSync(`render`, {
-      name: config.projectName,
-      env: config.env,
-      nodeVersion: +process.version.match(/^v(\d+\.\d+)/)[1],
-      region: config.region,
-      docker: config.useDocker
-    });
-    const file = fs.createWriteStream(
-      `${config.outDir}/${renderConfig.outputFileName}`
-    );
-    file.write(template);
-    file.end();
+  const generatedTemplate = await generateRenderTemplate({
+    config,
+    renderConfig
+  });
 
-    await spinner.stopAndPersist({
-      symbol: `⚙️`,
-      text: ` Added and configured ${chalk.bold.green(
-        config.provider.toUpperCase()
-      )} to project \n`
-    });
-    await spinner.stopAndPersist({
-      symbol: `🚀`,
-      text: ` Project is now ready, just push to your version control provider.
+  if (!generatedTemplate) {
+    outputs.error(`Unable to generate render template`);
+  }
+
+  spinner.stopAndPersist({
+    symbol: `⚙️ `,
+    text: `Added and configured ${chalk.bold.green(
+      config.provider.toUpperCase()
+    )} to project \n`
+  });
+
+  spinner.stopAndPersist({
+    symbol: `🚀 `,
+    text: `Project is now ready, just push to your version control provider.
 🚀  visit https://dashboard.render.com/select-repo?type=blueprint
 🚀  where you can connect your repo and deploy your app \n`
-    });
-  } catch (error) {
-    console.log(error);
-  }
+  });
 };
 
 module.exports = {
   renderHooks: {
-    async prebuild() {
-      await renderQuestions();
+    async build({ config, providerConfig }) {
+      await renderSetup({ config, renderConfig: providerConfig });
     },
-    async build(renderConfig) {
-      await renderSetup(renderConfig);
+    async destroy({ config, providerConfig }) {
+      await file.remove(providerConfig.outputFileName);
     }
   }
 };

@@ -1,14 +1,9 @@
-const init = require(`./init`);
-const cli = require(`./cli`);
-const log = require(`./log`);
-const quickStart = require(`./quickstart`);
-const { resetProvider } = require(`./reset`);
-const message = require(`./message`);
+const { getArgs } = require(`./args`);
+const commands = require(`./commands`);
+const outputs = require(`./outputs`);
+
 module.exports = {
-  init,
-  cli,
-  log,
-  quickStart,
-  resetProvider,
-  message
+  getArgs,
+  commands,
+  outputs
 };
