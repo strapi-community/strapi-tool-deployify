@@ -23,9 +23,16 @@ const destroyHerokuApp = async ({ config, herokuConfig }) => {
       message: `Pick the environments to clean`,
       choices: herokuApps,
       min: 1,
-      hint: `- Space to select. Return to submit`
+      hint: `- Space to select. Return to submit - ctrl/cmd + c to cancel`
     }
   ]);
+  if (!apps) {
+    spinner.stopAndPersist({
+      symbol: `🦄`,
+      text: ` Nothing selected so not destroying any apps \n`
+    });
+    return;
+  }
   for (const app of apps) {
     spinner.start(` 🦄  Tearing down ${chalk.magenta.bold(app.toUpperCase())}`);
     shell.exec(
