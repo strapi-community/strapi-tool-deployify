@@ -5,6 +5,7 @@ const outputs = require(`../../cli/outputs`);
 const { generateHerokuServices } = require(`./generateHerokuServices`);
 const { destroyHerokuApp } = require(`./destroyHerokuApp`);
 const { herokuAuthenticate, netrcExists } = require(`./authentication`);
+const { file } = require(`../../core`);
 
 const herokuSetup = async ({ config, herokuConfig }) => {
   outputs.info(`Generating heroku configuration file`);
@@ -34,12 +35,15 @@ module.exports = {
       if (!netrcExists()) await herokuAuthenticate();
     },
     async build({ config, providerConfig }) {
-      await herokuSetup({ config, herokuConfig: providerConfig });
+      if (config.useDocker) {
+        await herokuSetup({ config, herokuConfig: providerConfig });
+      }
     },
     async postbuild({ config, providerConfig }) {
       await generateHerokuServices({ config, herokuConfig: providerConfig });
     },
     async destroy({ config, providerConfig }) {
+      await file.remove(providerConfig.outputFileName);
       await destroyHerokuApp({ config, herokuConfig: providerConfig });
     }
   }

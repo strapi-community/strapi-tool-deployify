@@ -1,8 +1,8 @@
 const chalk = require(`chalk`);
 const { spinner } = require(`../../utils`);
-const { renderQuestions } = require(`../../core`);
 const outputs = require(`../../cli/outputs`);
 const { generateRenderTemplate } = require(`./renderFile`);
+const { file } = require(`../../core`);
 
 const renderSetup = async ({ config, renderConfig }) => {
   outputs.info(`Generating render configuration file`);
@@ -35,6 +35,9 @@ module.exports = {
   renderHooks: {
     async build({ config, providerConfig }) {
       await renderSetup({ config, renderConfig: providerConfig });
+    },
+    async destroy({ config, providerConfig }) {
+      await file.remove(providerConfig.outputFileName);
     }
   }
 };

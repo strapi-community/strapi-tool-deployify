@@ -9,8 +9,6 @@ const reset = async () => {
   const projectType = await detect.projectType();
 
   const detectedProviderName = await detect.provider();
-  console.log(detectedProviderName);
-
   const { environments, provider } = await askResetQuestions(
     detectedProviderName
   );
