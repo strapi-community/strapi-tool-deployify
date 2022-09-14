@@ -1,16 +1,16 @@
 services:
   - type: web
     name: {{ name }}
-{% if docker  %}
+{%- if docker  %}
     env: docker
-    {% if env == 'production' %}
+    {%- if env == 'production' %}
     dockerfilePath: ./Dockerfile.prod
-    {% else %}
-    dockerfilePath: ./Dockerfile{% endif %}
-    {% else %}
+    {%- else %}
+    dockerfilePath: ./Dockerfile{%- endif %}
+    {%- else %}
     env: node
 {% endif %}
-    plan: starter,
+    plan: starter
     region: {{ region }}
     buildCommand: yarn install && yarn build
     startCommand: yarn start
