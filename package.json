@@ -1,70 +1,71 @@
 {
-	"name": "@strapi-community/deployify",
-	"description": "Easily deploy a Strapi Project to cloud platforms",
-	"version": "0.0.0-development",
-	"license": "MIT",
-	"bin": {
-		"strapi-strapi-tool-deployify": "index.js",
-		"strapi-deployify": "index.js"
-	},
-	"author": "Simen Daehlin <simen.dehlin@gmail.com> (https://dehlin.dev)",
-	"keywords": [
-		"strapi-tool-deployify",
-		"Simen Daehlin",
-		"Strapi",
-		"Strapi Community"
-	],
-	"files": [
-		"index.js",
-		"utils",
-		"cli",
-		"core",
-		"providers",
-		"utils"
-	],
-	"scripts": {
-		"format": "prettier --write \"./**/*.{js,json}\"",
-		"semantic-release": "semantic-release --branches main",
-		"commit": "git-cz",
-		"acp": "git add . && npm run commit",
-		"lint": "eslint --ext .js --fix \"./**/*.js\""
-	},
-	"dependencies": {
-		"chalk": "^4.1.2",
-		"cli-meow-help": "^3.1.0",
-		"defu": "^6.1.0",
-		"fs-extra": "^10.1.0",
-		"hookable": "^5.3.0",
-		"liquidjs": "^9.41.0",
-		"log-symbols": "4.1.0",
-		"meow": "^9.0.0",
-		"new-github-issue-url": "^0.2.1",
-		"node-fetch": "^2.6.7",
-		"open": "^8.4.0",
-		"ora": "^5.4.1",
-		"prompts": "^2.4.2",
-		"shelljs": "^0.8.5"
-	},
-	"devDependencies": {
-		"cz-conventional-changelog": "^3.3.0",
-		"eslint": "^8.21.0",
-		"eslint-plugin-import": "^2.26.0",
-		"prettier": "^2.7.1",
-		"semantic-release": "^19.0.3"
-	},
-	"main": "index.js",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/strapi-community/strapi-tool-deployify.git"
-	},
-	"bugs": {
-		"url": "https://github.com/strapi-community/strapi-tool-deployify/issues"
-	},
-	"homepage": "https://github.com/strapi-community/strapi-tool-deployify#readme",
-	"url": "https://github.com/strapi-community/strapi-tool-deployify",
-	"config": {
-		"commitizen": {
-			"path": "./node_modules/cz-conventional-changelog"
-		}
-	}
+  "name": "@strapi-community/deployify",
+  "description": "Easily deploy a Strapi Project to cloud platforms",
+  "version": "0.0.0-development",
+  "license": "MIT",
+  "bin": {
+    "strapi-strapi-tool-deployify": "index.js",
+    "strapi-deployify": "index.js"
+  },
+  "author": "Simen Daehlin <simen.dehlin@gmail.com> (https://dehlin.dev)",
+  "keywords": [
+    "strapi-tool-deployify",
+    "Simen Daehlin",
+    "Strapi",
+    "Strapi Community"
+  ],
+  "files": [
+    "index.js",
+    "utils",
+    "cli",
+    "config",
+    "core",
+    "providers",
+    "utils"
+  ],
+  "scripts": {
+    "format": "prettier --write \"./**/*.{js,json}\"",
+    "semantic-release": "semantic-release --branches main",
+    "commit": "git-cz",
+    "acp": "git add . && npm run commit",
+    "lint": "eslint --ext .js --fix \"./**/*.js\""
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "cli-meow-help": "^3.1.0",
+    "defu": "^6.1.0",
+    "fs-extra": "^10.1.0",
+    "hookable": "^5.3.0",
+    "liquidjs": "^9.41.0",
+    "log-symbols": "4.1.0",
+    "meow": "^9.0.0",
+    "new-github-issue-url": "^0.2.1",
+    "node-fetch": "^2.6.7",
+    "open": "^8.4.0",
+    "ora": "^5.4.1",
+    "prompts": "^2.4.2",
+    "shelljs": "^0.8.5"
+  },
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.21.0",
+    "eslint-plugin-import": "^2.26.0",
+    "prettier": "^2.7.1",
+    "semantic-release": "^19.0.3"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strapi-community/strapi-tool-deployify.git"
+  },
+  "bugs": {
+    "url": "https://github.com/strapi-community/strapi-tool-deployify/issues"
+  },
+  "homepage": "https://github.com/strapi-community/strapi-tool-deployify#readme",
+  "url": "https://github.com/strapi-community/strapi-tool-deployify",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }
