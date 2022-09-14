@@ -1,19 +1,42 @@
 const chalk = require(`chalk`);
 const shell = require(`shelljs`);
 const { spinner } = require(`../../utils`);
+const prompts = require(`prompts`);
 
 const destroyHerokuApp = async ({ config, herokuConfig }) => {
-  const projectName = config.projectName;
-  spinner.stopAndPersist({
-    symbol: `💀 `,
-    text: `Tearing down ${chalk.magenta.bold(
-      projectName.toUpperCase()
-    )} on ${chalk.magenta.bold(`Heroku`)}`
-  });
-
-  shell.exec(
-    `HEROKU_API_KEY="${herokuConfig.apiToken}" heroku apps:destroy ${projectName} --confirm ${projectName}`
+  const test = shell.exec(
+    `HEROKU_API_KEY="${herokuConfig.apiToken}" heroku apps --json -p`,
+    { silent: true }
   );
+
+  // map over test and return title and value
+  const herokuApps = JSON.parse(test.stdout).map(app => {
+    return {
+      title: app.name,
+      value: app.name
+    };
+  });
+  let { apps } = await prompts([
+    {
+      type: `multiselect`,
+      name: `apps`,
+      message: `Pick the environments to clean`,
+      choices: herokuApps,
+      min: 1,
+      hint: `- Space to select. Return to submit`
+    }
+  ]);
+  for (const app of apps) {
+    spinner.start(` 🦄  Tearing down ${chalk.magenta.bold(app.toUpperCase())}`);
+    shell.exec(
+      `HEROKU_API_KEY="${herokuConfig.apiToken}" heroku apps:destroy ${app} --confirm ${app}`,
+      { silent: true }
+    );
+    spinner.stopAndPersist({
+      symbol: `💀`,
+      text: chalk.yellow(`Teared ${app} down from strapi \n`)
+    });
+  }
 
   spinner.stopAndPersist({
     symbol: `🤠 `,
