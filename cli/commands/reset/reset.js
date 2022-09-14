@@ -21,13 +21,13 @@ const reset = async () => {
   await deleteEnvDirs(environments);
   spinner.stopAndPersist({
     symbol: `🦄`,
-    text: chalk.yellow(`Directory search completed`)
+    text: ` Directory search ${chalk.yellow(` completed`)} \n`
   });
   await triggerResetHooks(config);
 
   spinner.stopAndPersist({
     symbol: `🧹 `,
-    text: `${chalk.yellow(`Project cleaned`)} \n`
+    text: `Project ${chalk.yellow(`cleaned`)} \n`
   });
 };
 

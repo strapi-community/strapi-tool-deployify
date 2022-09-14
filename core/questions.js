@@ -1,5 +1,6 @@
 const prompts = require(`prompts`);
-const { loadProviders, loadProviderConfig, buildConfig } = require(`../config`);
+const { loadProviders, loadProviderConfig } = require(`../config`);
+const chalk = require(`chalk`);
 
 const askGenerateQuestions = async () => {
   let initialQuestions = [
@@ -89,7 +90,9 @@ const askResetQuestions = async detectedProvider => {
         type: `confirm`,
         name: `providerConfirmation`,
         initial: true,
-        message: `Is ${detectedProvider} the provider you want to reset?`
+        message: `Is ${chalk.yellow.bold(
+          detectedProvider
+        )} the provider you want to reset?`
       }
     ]);
     if (providerConfirmation) {
