@@ -34,7 +34,7 @@ const destroyHerokuApp = async ({ config, herokuConfig }) => {
     );
     spinner.stopAndPersist({
       symbol: `💀`,
-      text: chalk.yellow(`Teared ${app} down from strapi \n`)
+      text: ` Teared ${chalk.yellow(app)} down from strapi \n`
     });
   }
 
