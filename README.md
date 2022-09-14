@@ -77,7 +77,7 @@ If interested please feel free to email the lead maintainer Simen at: simen@dehl
 
 ### Contributors
 
-- [Daedalus](https://github.com/ComfortablyCoding)
+- [@ComfortablyCoding / Daedalus](https://github.com/ComfortablyCoding)
 
 ## ⭐️ Show your support
 
