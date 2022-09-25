@@ -1,0 +1,13 @@
+{% if projectType == "ts" %}
+{% capture export_type %}
+export default
+{% endcapture %}
+{% else %}
+{% capture export_type %}
+module.exports =
+{% endcapture %}
+{% endif %} 
+{{ export_type | strip_newlines }} ({ env }) => ({
+  url: env('WEBSITE_URL'),
+  port: process.env.PORT,
+});
